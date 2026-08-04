@@ -1,0 +1,420 @@
+<div class="dashboard-container">
+  <!-- ================= Header ================= -->
+
+  <header class="dashboard-header">
+    <div class="header-left">
+      <div>
+        <h1>Leader Dashboard</h1>
+
+        <p>Welcome back, Rahul Mehta 👋</p>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button mat-icon-button>
+        <mat-icon>search</mat-icon>
+      </button>
+
+      <button mat-icon-button>
+        <mat-icon>notifications</mat-icon>
+      </button>
+
+      <button mat-icon-button>
+        <mat-icon>mail</mat-icon>
+      </button>
+
+      <div class="profile">
+        <img src="https://i.pravatar.cc/100?img=12" alt="profile" />
+
+        <div>
+          <h4>Rahul Mehta</h4>
+
+          <span>Team Leader</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= Filter ================= -->
+
+  <div class="filter-section">
+    <mat-button-toggle-group value="monthly">
+      <mat-button-toggle value="monthly"> Monthly </mat-button-toggle>
+
+      <mat-button-toggle value="quarterly"> Quarterly </mat-button-toggle>
+
+      <mat-button-toggle value="annual"> Annual </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <button mat-flat-button color="primary">
+      <mat-icon>add</mat-icon>
+
+      Create Recognition
+    </button>
+  </div>
+
+  <!-- ================= KPI Cards ================= -->
+
+  <div class="stats-grid">
+    <!-- Total Recognition Points -->
+
+    <mat-card class="stat-card purple">
+      <div class="stat-content">
+        <div class="stat-icon">
+          <mat-icon>workspace_premium</mat-icon>
+        </div>
+
+        <div class="stat-text">
+          <span class="stat-title"> Total Recognition Points </span>
+
+          <h2 class="stat-value">
+            {{ totalPoints }}
+          </h2>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Active Employees -->
+
+    <mat-card class="stat-card blue">
+      <div class="stat-content">
+        <div class="stat-icon">
+          <mat-icon>groups</mat-icon>
+        </div>
+
+        <div class="stat-text">
+          <span class="stat-title"> Active Employees </span>
+
+          <h2 class="stat-value">
+            {{ activeEmployees }}
+          </h2>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Approved Requests -->
+
+    <mat-card class="stat-card green">
+      <div class="stat-content">
+        <div class="stat-icon">
+          <mat-icon>task_alt</mat-icon>
+        </div>
+
+        <div class="stat-text">
+          <span class="stat-title"> Approved Requests </span>
+
+          <h2 class="stat-value">
+            {{ approvedRequests }}
+          </h2>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Pending Requests -->
+
+    <mat-card class="stat-card orange">
+      <div class="stat-content">
+        <div class="stat-icon">
+          <mat-icon>schedule</mat-icon>
+        </div>
+
+        <div class="stat-text">
+          <span class="stat-title"> Pending Requests </span>
+
+          <h2 class="stat-value">
+            {{ pendingRequests }}
+          </h2>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- ================= Row 1 ================= -->
+  <div class="dashboard-row">
+    <div class="dashboard-row first-row">
+        
+      <!-- Leaderboard -->
+
+      <mat-card class="leaderboard-card">
+        <div class="card-header">
+          <h3>Monthly Leaderboard</h3>
+
+          <button mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+
+                <th>Employee</th>
+
+                <th>Department</th>
+
+                <th>Points</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let leader of leaders; let i = index">
+                <td>
+                  {{ i + 1 }}
+                </td>
+
+                <td>
+                  <div class="employee">
+                    <div class="avatar">
+                      {{ leader.initial }}
+                    </div>
+
+                    <div>
+                      <h5>
+                        {{ leader.name }}
+                      </h5>
+
+                      <span>
+                        {{ leader.designation }}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  {{ leader.department }}
+                </td>
+
+                <td>
+                  {{ leader.points }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-card>
+
+       <!-- Achievement Badges -->
+
+      <mat-card class="badge-card">
+        <div class="card-header">
+          <h3>Achievement Badges</h3>
+        </div>
+
+        <div class="badge-content">
+          <div class="badge-grid">
+            <div class="badge-item">
+              🏆
+
+              <span>Platinum Leader</span>
+            </div>
+
+            <div class="badge-item">
+              ⭐
+
+              <span>Star Performer</span>
+            </div>
+
+            <div class="badge-item">
+              🚀
+
+              <span>Innovator</span>
+            </div>
+
+            <div class="badge-item">
+              🤝
+
+              <span>Team Player</span>
+            </div>
+
+            <div class="badge-item">
+              💡
+
+              <span>Problem Solver</span>
+            </div>
+
+            <div class="badge-item">
+              🎯
+
+              <span>Goal Achiever</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Performance -->
+      <mat-card class="performance-card">
+        <div class="card-header">
+          <h3>My Performance</h3>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-header">
+            <span>Leadership</span>
+
+            <strong>92%</strong>
+          </div>
+
+          <mat-progress-bar mode="determinate" value="92"> </mat-progress-bar>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-header">
+            <span>Innovation</span>
+
+            <strong>84%</strong>
+          </div>
+
+          <mat-progress-bar mode="determinate" value="84"> </mat-progress-bar>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-header">
+            <span>Team Work</span>
+
+            <strong>96%</strong>
+          </div>
+
+          <mat-progress-bar mode="determinate" value="96"> </mat-progress-bar>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-header">
+            <span>Customer Focus</span>
+
+            <strong>88%</strong>
+          </div>
+
+          <mat-progress-bar mode="determinate" value="88"> </mat-progress-bar>
+        </div>
+      </mat-card>
+
+       <!-- Recognition Category Chart -->
+
+      <mat-card class="category-card">
+        <div class="card-header">
+          <h3>Recognition Categories</h3>
+        </div>
+
+        <apx-chart
+          [series]="donutChart.series"
+          [chart]="donutChart.chart"
+          [labels]="donutChart.labels"
+          [legend]="donutChart.legend"
+          [responsive]="donutChart.responsive"
+        >
+        </apx-chart>
+      </mat-card>
+
+    </div>
+    <!-- ================= Row 2 ================= -->
+
+    <div class="dashboard-row second-row">
+      <!-- Recent Requests -->
+
+      <mat-card class="request-card">
+        <div class="card-header">
+          <h3>Recent Recognition Requests</h3>
+
+          <button mat-flat-button color="primary">View All</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Employee</th>
+
+                <th>Category</th>
+
+                <th>Points</th>
+
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let request of requests">
+                <td>{{ request.employee }}</td>
+
+                <td>{{ request.category }}</td>
+
+                <td>{{ request.points }}</td>
+
+                <td>
+                  <span
+                    class="status"
+                    [ngClass]="{
+                      approved: request.status === 'Approved',
+
+                      pending: request.status === 'Pending',
+
+                      rejected: request.status === 'Rejected',
+                    }"
+                  >
+                    {{ request.status }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-card>
+
+      
+      <!-- Recognition Trend -->
+
+      <mat-card class="chart-card">
+        <div class="card-header">
+          <div>
+            <h3>Recognition Trend</h3>
+
+            <span>Last 6 Months</span>
+          </div>
+
+          <button mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+
+        <apx-chart
+          [series]="trendChart.series"
+          [chart]="trendChart.chart"
+          [xaxis]="trendChart.xaxis"
+          [stroke]="trendChart.stroke"
+          [dataLabels]="trendChart.dataLabels"
+          [grid]="trendChart.grid"
+          [tooltip]="trendChart.tooltip"
+        >
+        </apx-chart>
+      </mat-card>
+
+      <!--Contribution card-->
+
+      <mat-card class="contributors-card">
+        <div class="card-header">
+          <h3>Top Contributors</h3>
+        </div>
+
+        <div class="contributors-content">
+          <div class="contributor" *ngFor="let leader of leaders">
+            <div class="avatar">
+              {{ leader.initial }}
+            </div>
+
+            <div class="info">
+              <h4>{{ leader.name }}</h4>
+
+              <span>{{ leader.department }}</span>
+            </div>
+
+            <div class="points">
+              {{ leader.points }}
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
