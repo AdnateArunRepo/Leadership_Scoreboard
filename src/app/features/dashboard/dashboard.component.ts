@@ -1,5 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import {OnInit , Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import {HeroService} from "../../core/services/hero.service";
 
 import {
   ChartComponent,
@@ -55,7 +57,9 @@ export interface DonutChartOptions {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+
+ 
 
   @ViewChild('trendChart')
   trendChartRef!: ChartComponent;
@@ -216,13 +220,29 @@ export class DashboardComponent {
   // Constructor
   //====================================================
 
-  constructor() {
+  constructor(private heroService: HeroService) {
 
     this.initializeTrendChart();
 
     this.initializeDonutChart();
 
   }
+
+  ngOnInit(): void {
+    debugger;
+    this.heroService.ajax(
+       'GetAllUsers ',
+      'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
+      {}
+    ).then((resp:any) => {
+      console.log('resp=>', resp);
+      let dt = this.heroService.xmltojson(resp,'quick_links');
+      console.log('show response after xmltojson=>',dt);
+      
+    })
+  }
+
+ 
 
   //====================================================
   // Trend Chart
