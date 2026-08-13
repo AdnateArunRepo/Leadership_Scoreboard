@@ -1,18 +1,17 @@
 <div class="dashboard-container">
   <!-- ================= Header ================= -->
 
-
   <header class="dashboard-header">
     <div class="header-left">
       <div>
         <h1>Leader Dashboard</h1>
 
-        <p>Welcome back, Rahul Mehta 👋</p>
+        <p>Welcome back, {{username}} 👋</p>
       </div>
     </div>
 
     <div class="header-right">
-      <button mat-icon-button>
+      <!-- <button mat-icon-button>
         <mat-icon>search</mat-icon>
       </button>
 
@@ -22,15 +21,15 @@
 
       <button mat-icon-button>
         <mat-icon>mail</mat-icon>
-      </button>
+      </button> -->
 
       <div class="profile">
         <img src="https://i.pravatar.cc/100?img=12" alt="profile" />
 
         <div>
-          <h4>Rahul Mehta</h4>
+          <h4>{{username}}</h4>
 
-          <span>Team Leader</span>
+          <!-- <span>Team Leader</span> -->
         </div>
       </div>
     </div>
@@ -38,8 +37,32 @@
 
   <!-- ================= Filter ================= -->
 
+  <!-- <div class="filter-section">
+
+   <mat-button-toggle-group
+        [value]="selectedPeriod"
+        (change)="onPeriodChange($event.value)">
+
+        <mat-button-toggle value="monthly">
+            Monthly
+        </mat-button-toggle>
+
+        <mat-button-toggle value="quarterly">
+            Quarterly
+        </mat-button-toggle>
+
+        <mat-button-toggle value="annual">
+            Annual
+        </mat-button-toggle>
+
+    </mat-button-toggle-group> 
+ </div> -->
+
   <div class="filter-section">
-    <mat-button-toggle-group value="monthly">
+    <mat-button-toggle-group
+      [(value)]="selectedPeriodType"
+      (change)="onPeriodTypeChange($event.value)"
+    >
       <mat-button-toggle value="monthly"> Monthly </mat-button-toggle>
 
       <mat-button-toggle value="quarterly"> Quarterly </mat-button-toggle>
@@ -47,12 +70,59 @@
       <mat-button-toggle value="annual"> Annual </mat-button-toggle>
     </mat-button-toggle-group>
 
-    <button mat-flat-button color="primary">
-      <mat-icon>add</mat-icon>
+    <!-- MONTH -->
 
-      Create Recognition
-    </button>
+    <mat-form-field
+      *ngIf="selectedPeriodType === 'monthly'"
+      appearance="outline"
+    >
+      <mat-label>Month</mat-label>
+
+      <mat-select
+        [(value)]="selectedMonth"
+        (selectionChange)="onPeriodChange()"
+      >
+        <mat-option *ngFor="let month of months" [value]="month.value">
+          {{ month.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- QUARTER -->
+
+    <mat-form-field
+      *ngIf="selectedPeriodType === 'quarterly'"
+      appearance="outline"
+    >
+      <mat-label>Quarter</mat-label>
+
+      <mat-select
+        [(value)]="selectedQuarter"
+        (selectionChange)="onPeriodChange()"
+      >
+        <mat-option *ngFor="let quarter of quarters" [value]="quarter.value">
+          {{ quarter.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- YEAR -->
+
+    <mat-form-field
+      *ngIf="selectedPeriodType === 'annual'"
+      appearance="outline"
+    >
+      <mat-label>Year</mat-label>
+
+      <mat-select [(value)]="selectedYear" (selectionChange)="onPeriodChange()">
+        <mat-option *ngFor="let year of years" [value]="year">
+          {{ year }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
+
+  
 
   <!-- ================= KPI Cards ================= -->
 
@@ -69,13 +139,13 @@
           <span class="stat-title"> Total Recognition Points </span>
 
           <h2 class="stat-value">
-            {{ totalPoints }}
+           {{  RecognitionReqCount.TOTALRECOGNITIONPOINTS || 0 }}
           </h2>
         </div>
       </div>
     </mat-card>
 
-    <!-- Active Employees -->
+    <!-- Total Requests -->
 
     <mat-card class="stat-card blue">
       <div class="stat-content">
@@ -84,10 +154,10 @@
         </div>
 
         <div class="stat-text">
-          <span class="stat-title"> Active Employees </span>
+          <span class="stat-title"> Total Request </span>
 
           <h2 class="stat-value">
-            {{ activeEmployees }}
+           {{ RecognitionReqCount.TOTALRECOGNITIONREQUEST || 0 }}
           </h2>
         </div>
       </div>
@@ -105,7 +175,7 @@
           <span class="stat-title"> Approved Requests </span>
 
           <h2 class="stat-value">
-            {{ approvedRequests }}
+            {{ RecognitionReqCount.APPROVEDREQUEST || 0 }}
           </h2>
         </div>
       </div>
@@ -123,7 +193,7 @@
           <span class="stat-title"> Pending Requests </span>
 
           <h2 class="stat-value">
-            {{ pendingRequests }}
+          {{ RecognitionReqCount.PENDINGREQUEST || 0 }}
           </h2>
         </div>
       </div>
@@ -133,12 +203,11 @@
   <!-- ================= Row 1 ================= -->
   <div class="dashboard-row">
     <div class="dashboard-row first-row">
-        
       <!-- Leaderboard -->
 
       <mat-card class="leaderboard-card">
         <div class="card-header">
-          <h3>Monthly Leaderboard</h3>
+          <h3>{{ selectedPeriodType | titlecase }} Leaderboard</h3>
 
           <button mat-icon-button>
             <mat-icon>more_vert</mat-icon>
@@ -153,14 +222,14 @@
 
                 <th>Employee</th>
 
-                <th>Department</th>
+                <th>Email</th>
 
                 <th>Points</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr *ngFor="let leader of leaders; let i = index">
+              <tr *ngFor="let data of paginatedTop5Data; let i = index">
                 <td>
                   {{ i + 1 }}
                 </td>
@@ -168,37 +237,56 @@
                 <td>
                   <div class="employee">
                     <div class="avatar">
-                      {{ leader.initial }}
+                      {{ getInitials(data.CREATEDFOR) }}
                     </div>
 
                     <div>
                       <h5>
-                        {{ leader.name }}
+                        {{ data.CREATEDFOR }}
                       </h5>
 
                       <span>
-                        {{ leader.designation }}
+                        {{ data.CURRENTSTAGE }}
                       </span>
                     </div>
                   </div>
                 </td>
 
                 <td>
-                  {{ leader.department }}
+                  {{ data.EMPLEMAIL || "-" }}
                 </td>
 
                 <td>
-                  {{ leader.points }}
+                  {{ data.TOTALPOINTS || 0 }}
+                </td>
+              </tr>
+
+              <!-- No Data -->
+
+              <tr *ngIf="top5Data.length === 0">
+                <td colspan="3" class="no-data">
+                  No top leaders found for the selected period.
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+
+          <mat-paginator
+    *ngIf="top5Data.length > 0"
+    [length]="top5Data.length"
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 20]"
+    (page)="onTop5PageChange($event)"
+    showFirstLastButtons>
+
+  </mat-paginator>
+
       </mat-card>
 
-       <!-- Achievement Badges -->
+      <!-- Achievement Badges -->
 
-      <mat-card class="badge-card">
+      <!-- <mat-card class="badge-card">
         <div class="card-header">
           <h3>Achievement Badges</h3>
         </div>
@@ -242,58 +330,54 @@
             </div>
           </div>
         </div>
-      </mat-card>
+      </mat-card> -->
 
-      <!-- Performance -->
-      <mat-card class="performance-card">
-        <div class="card-header">
-          <h3>My Performance</h3>
-        </div>
+<!-- Performance -->
 
-        <div class="progress-item">
-          <div class="progress-header">
-            <span>Leadership</span>
+<mat-card class="performance-card">
 
-            <strong>92%</strong>
-          </div>
+  <div class="card-header">
+    <h3>My Performance</h3>
+  </div>
 
-          <mat-progress-bar mode="determinate" value="92"> </mat-progress-bar>
-        </div>
+  <div
+    class="progress-item"
+    *ngFor="let performance of performanceData">
 
-        <div class="progress-item">
-          <div class="progress-header">
-            <span>Innovation</span>
+    <div class="progress-header">
 
-            <strong>84%</strong>
-          </div>
+      <span>
+        {{ performance.category }}
+      </span>
 
-          <mat-progress-bar mode="determinate" value="84"> </mat-progress-bar>
-        </div>
+      <strong>
+        {{ performance.percentage }}%
+      </strong>
 
-        <div class="progress-item">
-          <div class="progress-header">
-            <span>Team Work</span>
+    </div>
 
-            <strong>96%</strong>
-          </div>
+    <mat-progress-bar
+      mode="determinate"
+      [value]="performance.percentage">
+    </mat-progress-bar>
 
-          <mat-progress-bar mode="determinate" value="96"> </mat-progress-bar>
-        </div>
+  </div>
 
-        <div class="progress-item">
-          <div class="progress-header">
-            <span>Customer Focus</span>
+  <!-- No Data -->
 
-            <strong>88%</strong>
-          </div>
+  <div
+    class="performance-no-data"
+    *ngIf="performanceData.length === 0">
 
-          <mat-progress-bar mode="determinate" value="88"> </mat-progress-bar>
-        </div>
-      </mat-card>
+    No performance data for this period.
 
-       <!-- Recognition Category Chart -->
+  </div>
 
-      <mat-card class="category-card">
+</mat-card>
+
+      <!-- Recognition Category Chart -->
+
+      <!-- <mat-card class="category-card">
         <div class="card-header">
           <h3>Recognition Categories</h3>
         </div>
@@ -306,7 +390,57 @@
           [responsive]="donutChart.responsive"
         >
         </apx-chart>
-      </mat-card>
+      </mat-card> -->
+    
+
+<mat-card class="category-card">
+
+  <div class="card-header">
+
+    <h3>
+      Recognition Categories
+    </h3>
+
+  </div>
+
+  <div class="category-chart-container">
+
+    <!-- ============================= -->
+    <!-- DONUT CHART -->
+    <!-- ============================= -->
+
+    <apx-chart
+
+      [series]="donutChart.series"
+
+      [chart]="donutChart.chart"
+
+      [labels]="donutChart.labels"
+
+      [legend]="donutChart.legend"
+
+      [responsive]="donutChart.responsive">
+
+    </apx-chart>
+
+
+    <!-- ============================= -->
+    <!-- NO DATA MESSAGE -->
+    <!-- ============================= -->
+
+    <div
+      class="category-no-data"
+      *ngIf="!hasCategoryData">
+
+      <span>
+        No data for this period
+      </span>
+
+    </div>
+
+  </div>
+
+</mat-card>
 
     </div>
     <!-- ================= Row 2 ================= -->
@@ -318,7 +452,8 @@
         <div class="card-header">
           <h3>Recent Recognition Requests</h3>
 
-          <button mat-flat-button color="primary">View All</button>
+
+          <!-- <button mat-flat-button color="primary">View All</button> -->
         </div>
 
         <div class="table-container">
@@ -336,37 +471,56 @@
             </thead>
 
             <tbody>
-              <tr *ngFor="let request of requests">
-                <td>{{ request.employee }}</td>
+              <!-- <tr *ngFor="let request of recognitionRequests"> -->
+                <tr *ngFor="let request of paginatedRecognitionRequests">
+                <td>{{ request.CREATEDFOR }}</td>
 
-                <td>{{ request.category }}</td>
+                <td>{{ request.CATEGORY }}</td>
 
-                <td>{{ request.points }}</td>
+                <td>{{ request.AWARDEDPOINTS || 0 }}</td>
 
                 <td>
                   <span
                     class="status"
                     [ngClass]="{
-                      approved: request.status === 'Approved',
+                      approved: request.S_INSTANCE_STATUS === 'Complete',
 
-                      pending: request.status === 'Pending',
+                      pending: request.S_INSTANCE_STATUS === 'In Progress',
 
-                      rejected: request.status === 'Rejected',
+                      rejected: request.S_INSTANCE_STATUS === 'Rejected',
                     }"
                   >
-                    {{ request.status }}
+                    {{ request.S_INSTANCE_STATUS }}
                   </span>
+                </td>
+              </tr>
+
+              <!-- No records -->
+
+              <tr *ngIf="recognitionRequests.length === 0">
+                <td colspan="4" class="no-data">
+                  No recognition requests found for the selected period.
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+
+          <mat-paginator
+    *ngIf="recognitionRequests.length > 0"
+    [length]="recognitionRequests.length"
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 20]"
+    (page)="onRecognitionPageChange($event)"
+    showFirstLastButtons>
+
+  </mat-paginator>
+
       </mat-card>
 
-      
       <!-- Recognition Trend -->
 
-      <mat-card class="chart-card">
+      <!-- <mat-card class="chart-card">
         <div class="card-header">
           <div>
             <h3>Recognition Trend</h3>
@@ -389,7 +543,62 @@
           [tooltip]="trendChart.tooltip"
         >
         </apx-chart>
+      </mat-card> -->
+
+        <!-- Achievement Badges -->
+
+      <mat-card class="badge-card">
+        <div class="card-header">
+          <h3>Achievement Badges</h3>
+        </div>
+
+        <div class="badge-content">
+          <div class="badge-grid">
+            <div class="badge-item">
+              🏆
+
+              <span>Platinum Leader</span>
+              <span>0</span>
+            </div>
+
+            <div class="badge-item">
+              ⭐
+
+              <span>Star Performer</span>
+              <span>0</span>
+            </div>
+
+            <div class="badge-item">
+              🚀
+
+              <span>Innovator</span>
+              <span>0</span>
+            </div>
+
+            <div class="badge-item">
+              🤝
+
+              <span>Team Player</span>
+              <span>0</span>
+            </div>
+
+            <div class="badge-item">
+              💡
+
+              <span>Problem Solver</span>
+              <span>0</span>
+            </div>
+
+            <div class="badge-item">
+              🎯
+
+              <span>Goal Achiever</span>
+              <span>0</span>
+            </div>
+          </div>
+        </div>
       </mat-card>
+
 
       <!--Contribution card-->
 
@@ -399,23 +608,35 @@
         </div>
 
         <div class="contributors-content">
-          <div class="contributor" *ngFor="let leader of leaders">
+          <div class="contributor" *ngFor="let data of top5Data; let i = index">
             <div class="avatar">
-              {{ leader.initial }}
+            {{ getInitials(data.CREATEDFOR) }}
             </div>
 
             <div class="info">
-              <h4>{{ leader.name }}</h4>
+              <h4> {{ data.CREATEDFOR }}</h4>
 
-              <span>{{ leader.department }}</span>
             </div>
 
             <div class="points">
-              {{ leader.points }}
+              {{ data.TOTALPOINTS || 0 }}
             </div>
+
+          
           </div>
+             <!-- No Data -->
+
+              <div *ngIf="top5Data.length === 0" class="no-data">
+              
+                  No top leaders found for the selected period.
+                
+              </div>
+
         </div>
       </mat-card>
+
+      
+
     </div>
   </div>
 </div>

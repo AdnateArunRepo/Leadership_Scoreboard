@@ -551,12 +551,18 @@ BADGES
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    padding:24px 12px;
+   // padding:24px 12px;
     border-radius:16px;
     background:#f7f9fc;
     transition:.3s;
     cursor:pointer;
-    font-size:34px;
+    //font-size:34px;
+     /* Reduced internal height */
+  padding: 10px 12px;
+  min-height: 55px;
+  border-radius: 10px;
+  /* Smaller emoji */
+  font-size: 28px;
 
 }
 
@@ -852,14 +858,14 @@ END
 
 .dashboard-row:first-child{
 
-    grid-template-columns:1.3fr 1fr 1.3fr 1fr;
-
+    // grid-template-columns:1.3fr 1fr 1.3fr 1fr;
+    grid-template-columns:2.3fr 1fr  1fr;
 }
 
 .second-row{
 
-    grid-template-columns:2fr 1fr 1fr;
-
+    // grid-template-columns:2.3fr 1fr 1fr;
+     grid-template-columns:2.3fr 1fr 1fr;
 }
 
 .leaderboard-card,
@@ -985,5 +991,181 @@ thead th{
 
     flex:1;
     overflow-y:auto;
+
+}
+
+/*=======================Top Contributor==================================*/
+
+.dashboard-filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dashboard-filters mat-form-field {
+    width: 120px;
+    margin: 0;
+}
+
+/* Make filters compact */
+.dashboard-filters ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+.dashboard-filters ::ng-deep .mat-mdc-text-field-wrapper {
+    height: 42px;
+}
+
+.dashboard-filters ::ng-deep .mat-mdc-form-field-infix {
+    min-height: 42px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.no-data {
+  text-align: center !important;
+  vertical-align: middle !important;
+  height: 120px;
+  padding: 0 !important;
+  color: #dc3545 !important;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+//=============================Contributor Scrool bar======================================
+.contributors-content {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+}
+
+/* Scrollbar */
+.contributors-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.contributors-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.contributors-content::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 10px;
+}
+
+.contributors-content::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+/* Contributor row */
+.contributor {
+  display: flex;
+  align-items: center;
+  padding: 10px 5px;
+  min-height: 55px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  margin-left: 12px;
+}
+
+.info h4 {
+  margin: 0;
+}
+
+.points {
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 30px 10px;
+  color: #777;
+}
+
+//=============================donut chart no data======================================
+
+/*=========================================================
+RECOGNITION CATEGORY CHART
+=========================================================*/
+
+.category-card {
+
+  padding: 18px;
+
+  overflow: hidden;
+
+}
+
+.category-chart-container {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 220px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+}
+
+.category-chart-container apx-chart {
+
+  width: 100%;
+
+  height: 220px;
+
+}
+
+
+/*=========================================================
+NO DATA MESSAGE
+=========================================================*/
+
+.category-no-data {
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 160px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  pointer-events: none;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  color: #ef4444;
+
+  text-align: center;
 
 }
