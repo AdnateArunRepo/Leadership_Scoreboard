@@ -2,7 +2,7 @@
 
   "/com.eibus.web.soap.Gateway.wcp": { 
 
-    "target": "http://43.242.214.239:81/home/training2025/", 
+    "target": "http://43.242.214.197:8081/home/Adnate/", 
 
     "secure": false, 
 
@@ -14,7 +14,7 @@
 
   "/com.eibus.sso.web.authentication.PreLoginInfo.wcp": { 
 
-    "target": "http://43.242.214.239:81/home/training2025/", 
+    "target": "http://43.242.214.197:8081/home/Adnate/", 
 
     "secure": false, 
 
@@ -26,7 +26,7 @@
 
   "/cordys/": { 
 
-    "target": "http://43.242.214.239:81/",  
+    "target": "http://43.242.214.197:8081/",  
 
     "secure": false, 
 
