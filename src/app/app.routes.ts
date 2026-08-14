@@ -45,6 +45,14 @@ export const routes: Routes = [
         m => m.AdminDashboardComponent
       )
   },
+ // My Inbox
+  {
+    path: 'my-inbox',
+    loadComponent: () =>
+      import('./my-inbox/my-inbox.component').then(
+        m => m.MyInboxComponent
+      )
+  },
 
   // Wildcard Route
   {
