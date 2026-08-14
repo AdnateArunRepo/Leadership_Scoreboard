@@ -22,7 +22,7 @@ imports: [CommonModule, FormsModule],
 export class MyInboxComponent {
   
   constructor(private hs: HeroService, private route: ActivatedRoute) {
-     console.log('username field at construction =>', this.username)
+     //console.log('username field at construction =>', this.username)
   }
 username: any = localStorage.getItem('username') || 'Guest';
 userParam: any;
@@ -31,7 +31,6 @@ userParam: any;
 
   this.route.queryParams.subscribe((params) => {
     this.userParam = this.username;
-//this.userParam = 'abhineet.k@Appworks 197 Maruti';
        // ? decodeURIComponent(params['user'])
         //: null;
       this.getUserTasks();
