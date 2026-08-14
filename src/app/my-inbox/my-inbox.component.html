@@ -10,9 +10,10 @@
     <div class="header-brand">Leadership Scoreboard</div>
 
     <div class="header-right">
-      <span class="icon-circle">&#128276;</span>
-      <span class="icon-circle">&#128100;</span>
+      <!--span class="icon-circle">&#128276;</span>
+      <span class="icon-circle">&#128100;</span-->
     </div>
+    
   </div>
 
   <!-- Tabs + Search -->
@@ -46,6 +47,8 @@
     <th>Request ID</th>
       <th>Assigned On</th>
       <th>Subject</th>
+            <th>Action</th>
+
       </tr>
     </thead>
     <tbody>
@@ -53,10 +56,7 @@
         <td>{{ task.requestId }}</td>
       <td>{{ task.assignedOn }}</td>
       <td>{{ task.subject }}</td>
-
-
-
-        <td>
+<td>
           <button class="open-task-btn" (click)="openTask(task)">Open Task</button>
         </td>
       </tr>

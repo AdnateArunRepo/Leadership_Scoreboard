@@ -9,6 +9,7 @@ interface InboxTask {
   assignedOn: string;
   subject: string;
   status: 'Pending' | 'Completed';
+   taskUrl: string;
 }
 
 @Component({
@@ -20,15 +21,19 @@ imports: [CommonModule, FormsModule],
 })
 export class MyInboxComponent {
   
-  constructor(private hs: HeroService, private route: ActivatedRoute) {}
+  constructor(private hs: HeroService, private route: ActivatedRoute) {
+     console.log('username field at construction =>', this.username)
+  }
+username: any = localStorage.getItem('username') || 'Guest';
 userParam: any;
 
  ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-   //  this.userParam = params['user']
-this.userParam = 'abhineet.k@Appworks 197 Maruti';
+
+  this.route.queryParams.subscribe((params) => {
+    this.userParam = this.username;
+//this.userParam = 'abhineet.k@Appworks 197 Maruti';
        // ? decodeURIComponent(params['user'])
-       // : null;
+        //: null;
       this.getUserTasks();
       console.log('Extracted Parameter:', this.userParam);
     });
@@ -43,12 +48,25 @@ this.userParam = 'abhineet.k@Appworks 197 Maruti';
 
 
 getUserTasks() {
+  
     this.hs
       .ajax(
         'GetUserTasks',
         'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
         { UserID: this.userParam }
       )
+
+      /*
+     this.hs.ajax(
+  'GetTasks',
+  'http://schemas.cordys.com/notification/workflow/1.0',
+  {
+    cursor: { id: '-1', position: '0', numRows: '50', maxRows: '50' },
+    Target: 'cn=abhineet.k@Appworks 197 Maruti,cn=organizational users,o=Adnate,cn=cordys,cn=marutiInst,o=adnatesolutions.com',
+    ShowNonWorkableItems: 'true',
+    ReturnTaskData: 'true'
+  }
+)*/
       .then((resp: any) => {
         console.log('GetUserTasks response =>', resp);
 
@@ -67,14 +85,18 @@ getUserTasks() {
             requestId: util.REQUESTID ?? '',
             assignedOn: util.ASSIGNEDON ?? '',
             subject: util.SUBJECT ?? '',
-            status: 'Pending'
+            status: 'Pending',
+             taskUrl: util.TASKURL ?? ''
           };
         });
       })
+
       .catch((err: any) => {
         console.error('GetUserTasks error =>', err);
       });
   }
+
+  
  pendingTasks: InboxTask[] = [];
   completedTasks: InboxTask[] = [];
 
@@ -93,7 +115,18 @@ getUserTasks() {
     this.searchTerm = '';
   }
 
+ 
+
   openTask(task: InboxTask): void {
-    console.log('Open Task clicked:', task);
+  console.log('Open Task clicked:', task);
+
+  if (!task.taskUrl) {
+    console.warn('No taskUrl found for this task, cannot open.');
+    return;
   }
+//const url = new URL(task.taskUrl);
+  //const relativePath = url.pathname + url.search;
+  //window.open(relativePath, '_blank');
+  window.open(task.taskUrl, '_blank');
+}
 }
