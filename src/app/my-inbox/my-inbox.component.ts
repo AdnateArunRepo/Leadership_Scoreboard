@@ -39,51 +39,7 @@ this.userParam = 'abhineet.k@Appworks 197 Maruti';
   
 
 
-   /* getUserTasks() {
-      const that = this;
-    this.hs
-      .ajax(
-        'GetUserTasks',
-        'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
-        { UserID: this.userParam }
-      )
-      .then((resp: any) => {
-
-        console.log('GetUserTasks response =>', resp);
-    })
-    .catch((err: any) => {
-      console.error('GetUserTasks error =>', err);
-    
-      });
-    }
-/*
-  pendingTasks: InboxTask[] = [
-    { requestId: '', EmployeeName: 'Request', Category: '', assignedOn: '2026-08-05', status: 'Pending' },
-    { requestId: '', EmployeeName: 'Request', Category: '', assignedOn: '2026-08-03', status: 'Pending' },
-    { requestId: '', EmployeeName: 'Request', Category: '', assignedOn: '', status: 'Pending' }
-  ];
-
-  completedTasks: InboxTask[] = [
-    { requestId: '', EmployeeName: '', Category: '', assignedOn: '2026-08-01', status: 'Completed' },
-    { requestId: '', EmployeeName: '', Category: '', assignedOn: '2026-07-30', status: 'Completed' }
-  ];
-
-
-pendingTasks: InboxTask[] = [];
-completedTasks: InboxTask[] = [];
-
-
-  get currentTasks(): InboxTask[] {
-    const source = this.activeTab === 'pending' ? this.pendingTasks : this.completedTasks;
-    const term = this.searchTerm.trim().toLowerCase();
-    if (!term) return source;
-    return source.filter(
-      t =>
-        t.EmployeeName.toLowerCase().includes(term) ||
-        t.Category.toLowerCase().includes(term)
-    );
-  }
-*/
+  
 
 
 getUserTasks() {
