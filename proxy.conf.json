@@ -26,7 +26,7 @@
 
   "/cordys/": { 
 
-    "target": "http://43.242.214.197:8081",  
+    "target": "http://43.242.214.239:81/",  
 
     "secure": false, 
 

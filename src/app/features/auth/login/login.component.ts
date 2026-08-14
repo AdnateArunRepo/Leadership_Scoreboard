@@ -86,6 +86,7 @@ export class LoginComponent {
         //this.router.navigate(['/admin-dashboard']);
         //  this.router.navigate(['/leader-dashboard']);
         this.router.navigate(['/dashboard']);
+        localStorage.setItem('username', username);
       })
       .fail((err: any) => {
         console.error('Login Failed', err);
