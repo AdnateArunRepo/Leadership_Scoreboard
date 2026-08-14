@@ -15,6 +15,17 @@ export class HeroService {
 
 } 
 
+// xmltojson(resp: any, key: any): any[] {
+//   const result = $.cordys.json.find(resp, key);
+
+//   return Array.isArray(result)
+//     ? result
+//     : result
+//       ? [result]
+//       : [];
+// }
+
+
 ajax(method: any, namespace: any, parameters: any) { 
 
  return new Promise((rev, rej) => { 
