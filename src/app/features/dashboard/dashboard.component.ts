@@ -236,17 +236,17 @@ export class DashboardComponent implements OnInit {
   username: any = localStorage.getItem('username') || 'Guest';
   ngOnInit(): void {
     debugger;
-    this.heroService
-      .ajax(
-        'GetAllUsers ',
-        'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
-        {},
-      )
-      .then((resp: any) => {
-        console.log('resp=>', resp);
-        let dt = this.heroService.xmltojson(resp, 'quick_links');
-        console.log('show response after xmltojson=>', dt);
-      });
+    // this.heroService
+    //   .ajax(
+    //     'GetAllUsers ',
+    //     'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
+    //     {},
+    //   )
+    //   .then((resp: any) => {
+    //     console.log('resp=>', resp);
+    //     let dt = this.heroService.xmltojson(resp, 'quick_links');
+    //     console.log('show response after xmltojson=>', dt);
+    //   });
 
     // this.getTop5RecognitionData('');
     //this.loadDashboardData();
@@ -689,6 +689,8 @@ populateDonutChart(): void {
         this.recognitionCategoryPercentage = [];
       });
   }
+
+  
 
   //==================toggle month,Quarter,Year======================
 

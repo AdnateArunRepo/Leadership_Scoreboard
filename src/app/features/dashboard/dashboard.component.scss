@@ -31,7 +31,7 @@ HEADER
 
 .header-left h1{
 
-    font-size:22px;
+    font-size:32px;
     font-weight:700;
     color:#22304a;
     margin-bottom:2px;
@@ -261,27 +261,57 @@ KPI CARDS
 
 .purple{
 
-    background:linear-gradient(135deg,#6C63FF,#5A4CF0);
+   background:linear-gradient(135deg,#6C63FF,#5A4CF0);
+//    background: linear-gradient(135deg, #9b96ff, #8580f5);
+    //  background: linear-gradient(135deg, #90caf9, #72b5ed);
 
 }
 
 .blue{
 
-    background:linear-gradient(135deg,#2196F3,#1565C0);
-
+   background:linear-gradient(135deg,#2196F3,#1565C0);
+//   background: linear-gradient(135deg, #64b5f6, #4a90d9);
+    //  background: linear-gradient(135deg, #90caf9, #72b5ed);
 }
 
 .green{
 
-    background:linear-gradient(135deg,#43A047,#2E7D32);
+   background:linear-gradient(135deg,#43A047,#2E7D32);
+//   background: linear-gradient(135deg, #81c784, #66ad6a);
+ // background: linear-gradient(135deg, #a5d6a7, #86c98a);
+
 
 }
 
 .orange{
 
-    background:linear-gradient(135deg,#FB8C00,#EF6C00);
+   background:linear-gradient(135deg,#FB8C00,#EF6C00);
+//    background: linear-gradient(135deg, #ffb74d, #f39a27);
+//   background: linear-gradient(135deg, #ffcc80, #ffb95c);
 
 }
+
+// .purple,
+// .blue,
+// .green,
+// .orange {
+//   background: #ffffff;
+//   color: #22304a;
+//   border: 1px solid #e5e7eb;
+//   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+// }
+
+
+// .purple,
+// .blue,
+// .green,
+// .orange {
+//   background: #f8fafc;
+//   color: #22304a;
+//   border: 1px solid #e2e8f0;
+//   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+// }
+
 /*=========================================================
 LEADERBOARD
 =========================================================*/
@@ -1169,3 +1199,59 @@ NO DATA MESSAGE
   text-align: center;
 
 }
+
+//=============================Period Filter======================================
+.period-filter {
+  width: 260px;
+  margin-bottom: 0 !important;
+}
+
+/* Outer box height */
+.period-filter .mat-mdc-text-field-wrapper {
+  height: 32px !important;
+}
+
+/* Internal flex area */
+.period-filter .mat-mdc-form-field-flex {
+  height: 32px !important;
+}
+
+/* Select content area */
+.period-filter .mat-mdc-form-field-infix {
+  min-height: 32px !important;
+  height: 42px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+/* Selected value */
+.period-filter .mat-mdc-select-value {
+  font-size: 16px !important;
+}
+
+/* Dropdown arrow */
+.period-filter .mat-mdc-select-arrow {
+  margin-top: 0 !important;
+}
+
+/* Label */
+.period-filter .mat-mdc-floating-label {
+  font-size: 14px !important;
+}
+
+// .filter-section {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin-bottom: 18px;
+//   gap: 12px;
+// }
+
+// .filter-section mat-button-toggle-group {
+//   height: 42px;
+// }
+
+// .filter-section .period-filter {
+//   margin-left: auto;
+// }
+

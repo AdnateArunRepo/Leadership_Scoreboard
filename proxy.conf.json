@@ -24,13 +24,18 @@
 
   }, 
 
+   "/home/Adnate/shared/": {
+    "target": "http://43.242.214.197:8081/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "timeout": 3600000,
+    "proxyTimeout": 3600000
+  },
+
   "/cordys/": { 
 
-<<<<<<< HEAD
-    "target": "http://43.242.214.239:81/",  
-=======
     "target": "http://43.242.214.197:8081",  
->>>>>>> 2651bfcc7b2bc98a4c7c82bc6bbe2c81858ba523
 
     "secure": false, 
 

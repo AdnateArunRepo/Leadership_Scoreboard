@@ -5,7 +5,7 @@ export const routes: Routes = [
 
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'dashboard',
     pathMatch: 'full'
   },
 
@@ -46,14 +46,22 @@ export const routes: Routes = [
       )
   },
  // My Inbox
-  {
-    path: 'my-inbox',
-    loadComponent: () =>
-      import('./my-inbox/my-inbox.component').then(
-        m => m.MyInboxComponent
-      )
-  },
+  // {
+  //   path: 'my-inbox',
+  //   loadComponent: () =>
+  //     import('./my-inbox/my-inbox.component').then(
+  //       m => m.MyInboxComponent
+  //     )
+  // },
+{
+  path: 'my-inbox',
+  loadComponent: () =>
+    import('./my-inbox/my-inbox.component').then(
+      m => m.MyInboxComponent
+    )
+},
 
+  
   // Wildcard Route
   {
     path: '**',

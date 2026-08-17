@@ -26,7 +26,7 @@ userParam: any;
  ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
    //  this.userParam = params['user']
-this.userParam = 'abhineet.k@Appworks 197 Maruti';
+this.userParam = '';
        // ? decodeURIComponent(params['user'])
        // : null;
       this.getUserTasks();
