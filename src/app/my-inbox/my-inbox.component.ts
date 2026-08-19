@@ -5,99 +5,103 @@ import { HeroService } from '../core/services/hero.service';
 import { ActivatedRoute } from '@angular/router';
 
 interface InboxTask {
- requestId: string;
+  requestId: string;
   assignedOn: string;
   subject: string;
   status: 'Pending' | 'Completed';
-   taskUrl: string;
+  taskUrl: string;
 }
 
 @Component({
   selector: 'app-my-inbox',
   standalone: true,
-imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './my-inbox.component.html',
   styleUrl: './my-inbox.component.scss'
 })
 export class MyInboxComponent {
-  
+
+  username: any = localStorage.getItem('username') || 'Guest';
+  loggedInUser: any;
+  activeTab: 'pending' | 'completed' = 'pending';
+  searchTerm = '';
+  pendingTasks: InboxTask[] = [];
+  completedTasks: InboxTask[] = [];
+
   constructor(private hs: HeroService, private route: ActivatedRoute) {
-     //console.log('username field at construction =>', this.username)
+    //console.log('username field at construction =>', this.username)
   }
-username: any = localStorage.getItem('username') || 'Guest';
-userParam: any;
 
- ngOnInit(): void {
-
-  this.route.queryParams.subscribe((params) => {
-    this.userParam = this.username;
-       // ? decodeURIComponent(params['user'])
-        //: null;
-      this.getUserTasks();
-      console.log('Extracted Parameter:', this.userParam);
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.getUserDetails(); 
     });
   }
-   activeTab: 'pending' | 'completed' = 'pending';
-  searchTerm = '';
 
-  
+  getUserDetails(): void {
+    this.hs
+      .ajax(
+        'GetUserDetails',
+        'http://schemas.cordys.com/UserManagement/1.0/Organization',
+        {
+          Username: this.username,
+        },
+      )
+      .then((resp: any) => {
+        console.log('getUserDetails response:', resp);
+        this.loggedInUser = resp.User.UserName;
+        console.log('loggedInUser', this.loggedInUser);
 
+        this.getUserTasks();
+      })
+      .catch((error: any) => {
+        console.error('getUserDetails error:', error);
+      });
+  }
 
-  
-
-
-getUserTasks() {
-  
+  getUserTasks() {
     this.hs
       .ajax(
         'GetUserTasks',
         'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
-        { UserID: this.userParam }
+        { UserID: this.loggedInUser }
       )
-
-      /*
-     this.hs.ajax(
-  'GetTasks',
-  'http://schemas.cordys.com/notification/workflow/1.0',
-  {
-    cursor: { id: '-1', position: '0', numRows: '50', maxRows: '50' },
-    Target: 'cn=abhineet.k@Appworks 197 Maruti,cn=organizational users,o=Adnate,cn=cordys,cn=marutiInst,o=adnatesolutions.com',
-    ShowNonWorkableItems: 'true',
-    ReturnTaskData: 'true'
-  }
-)*/
       .then((resp: any) => {
         console.log('GetUserTasks response =>', resp);
 
-        const tuples = resp?.tuple;
+             const tuples = resp?.tuple;
         if (!tuples) {
           this.pendingTasks = [];
+          this.completedTasks = [];
           return;
         }
 
-        // Normalize: tuple can be a single object or an array
         const tupleArray = Array.isArray(tuples) ? tuples : [tuples];
 
-        this.pendingTasks = tupleArray.map((t: any) => {
+       
+
+
+                const allTasks: (InboxTask & { state: string })[] = tupleArray.map((t: any) => {
           const util = t?.old?.LeadershipUtility ?? {};
+          const state = String(util.STATE ?? '');
+
           return {
             requestId: util.REQUESTID ?? '',
             assignedOn: util.ASSIGNEDON ?? '',
             subject: util.SUBJECT ?? '',
-            status: 'Pending',
-             taskUrl: util.TASKURL ?? ''
+            status: state === '5' ? 'Completed' : 'Pending',
+            taskUrl: util.TASKURL ?? '',
+            state
           };
         });
+                this.pendingTasks = allTasks.filter(t => t.state === '2');
+        this.completedTasks = allTasks.filter(t => t.state === '5');
       })
 
       .catch((err: any) => {
         console.error('GetUserTasks error =>', err);
       });
   }
-
-  
- pendingTasks: InboxTask[] = [];
-  completedTasks: InboxTask[] = [];
 
   get currentTasks(): InboxTask[] {
     const source = this.activeTab === 'pending' ? this.pendingTasks : this.completedTasks;
@@ -109,23 +113,20 @@ getUserTasks() {
         t.requestId.toLowerCase().includes(term)
     );
   }
+
   switchTab(tab: 'pending' | 'completed'): void {
     this.activeTab = tab;
     this.searchTerm = '';
   }
 
- 
-
   openTask(task: InboxTask): void {
-  console.log('Open Task clicked:', task);
+    console.log('Open Task clicked:', task);
 
-  if (!task.taskUrl) {
-    console.warn('No taskUrl found for this task, cannot open.');
-    return;
+    if (!task.taskUrl) {
+      console.warn('No taskUrl found for this task, cannot open.');
+      return;
+    }
+ 
+    window.open(task.taskUrl, '_blank');
   }
-//const url = new URL(task.taskUrl);
-  //const relativePath = url.pathname + url.search;
-  //window.open(relativePath, '_blank');
-  window.open(task.taskUrl, '_blank');
-}
 }
