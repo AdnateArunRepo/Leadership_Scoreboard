@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeroService } from '../core/services/hero.service';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 interface InboxTask {
   requestId: string;
@@ -15,7 +17,7 @@ interface InboxTask {
 @Component({
   selector: 'app-my-inbox',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './my-inbox.component.html',
   styleUrl: './my-inbox.component.scss'
 })
@@ -28,7 +30,7 @@ export class MyInboxComponent {
   pendingTasks: InboxTask[] = [];
   completedTasks: InboxTask[] = [];
 
-  constructor(private hs: HeroService, private route: ActivatedRoute) {
+  constructor(private hs: HeroService, private route: ActivatedRoute,private router: Router) {
     //console.log('username field at construction =>', this.username)
   }
 
@@ -129,4 +131,8 @@ export class MyInboxComponent {
  
     window.open(task.taskUrl, '_blank');
   }
+  goToDashboard(): void {
+  this.router.navigate(['/dashboard']);
+}
+
 }

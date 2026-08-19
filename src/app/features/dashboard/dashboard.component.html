@@ -6,7 +6,7 @@
       <div>
         <h1>Leader Dashboard</h1>
 
-        <p>Welcome back, {{username}} 👋</p>
+        <!-- <p>Welcome back, {{loggedInUser}} 👋</p> -->
       </div>
     </div>
 
@@ -27,7 +27,7 @@
         <img src="https://i.pravatar.cc/100?img=12" alt="profile" />
 
         <div>
-          <h4>{{username}}</h4>
+          <h4>{{loggedInUser}}</h4>
 
           <!-- <span>Team Leader</span> -->
         </div>
@@ -37,26 +37,6 @@
 
   <!-- ================= Filter ================= -->
 
-  <!-- <div class="filter-section">
-
-   <mat-button-toggle-group
-        [value]="selectedPeriod"
-        (change)="onPeriodChange($event.value)">
-
-        <mat-button-toggle value="monthly">
-            Monthly
-        </mat-button-toggle>
-
-        <mat-button-toggle value="quarterly">
-            Quarterly
-        </mat-button-toggle>
-
-        <mat-button-toggle value="annual">
-            Annual
-        </mat-button-toggle>
-
-    </mat-button-toggle-group> 
- </div> -->
 
   <div class="filter-section">
     <mat-button-toggle-group
@@ -75,6 +55,7 @@
     <mat-form-field
       *ngIf="selectedPeriodType === 'monthly'"
       appearance="outline"
+       class="period-filter"
     >
       <mat-label>Month</mat-label>
 
@@ -93,6 +74,7 @@
     <mat-form-field
       *ngIf="selectedPeriodType === 'quarterly'"
       appearance="outline"
+       class="period-filter"
     >
       <mat-label>Quarter</mat-label>
 
@@ -111,6 +93,7 @@
     <mat-form-field
       *ngIf="selectedPeriodType === 'annual'"
       appearance="outline"
+       class="period-filter"
     >
       <mat-label>Year</mat-label>
 
@@ -147,7 +130,7 @@
 
     <!-- Total Requests -->
 
-    <mat-card class="stat-card blue">
+    <mat-card class="stat-card blue clickable-card" (click)="goToMyInbox()"   style="cursor: pointer;">
       <div class="stat-content">
         <div class="stat-icon">
           <mat-icon>groups</mat-icon>
@@ -165,7 +148,7 @@
 
     <!-- Approved Requests -->
 
-    <mat-card class="stat-card green">
+    <mat-card class="stat-card green clickable-card" (click)="goToMyInbox()"   style="cursor: pointer;">
       <div class="stat-content">
         <div class="stat-icon">
           <mat-icon>task_alt</mat-icon>
@@ -183,7 +166,7 @@
 
     <!-- Pending Requests -->
 
-    <mat-card class="stat-card orange">
+    <mat-card class="stat-card orange clickable-card" (click)="goToMyInbox()"   style="cursor: pointer;">
       <div class="stat-content">
         <div class="stat-icon">
           <mat-icon>schedule</mat-icon>

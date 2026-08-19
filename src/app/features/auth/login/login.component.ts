@@ -1,20 +1,10 @@
-// import { Component } from '@angular/core';
 
-// @Component({
-//   selector: 'app-login',
-//   standalone: true,
-//   imports: [],
-//   templateUrl: './login.component.html',
-//   styleUrl: './login.component.scss'
-// })
-// export class LoginComponent {
 
-// }
-
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 //import { HeroService } from '../../../services/hero.service';
+import {AuthService} from '../../../core/services/auth.service';
 
 import {
   FormBuilder,
@@ -47,12 +37,13 @@ declare var $: any;
     MatFormFieldModule,
   ],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private ssoAuth: AuthService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -60,6 +51,13 @@ export class LoginComponent {
       password: ['', Validators.required],
     });
   }
+
+    ngOnInit(): void {
+
+  }
+
+
+
 
   login() {
     if (this.loginForm.invalid) {
@@ -74,24 +72,57 @@ export class LoginComponent {
     const username = this.loginForm.get('username')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    $.cordys.authentication.sso
-      .authenticate(username, password)
-      .done((resp: any) => {
-        console.log('Login Successful', resp);
+    // $.cordys.authentication.sso
+    //   .authenticate(username, password)
+    //   .done((resp: any) => {
+    //     console.log('Login Successful', resp);
 
-        // Store credentials if required
-        //  this.heroService.setCredentials(username, password);
+    //     // Store credentials if required
+    //     //  this.heroService.setCredentials(username, password);
 
-        // Navigate to dashboard
-        //this.router.navigate(['/admin-dashboard']);
-        //  this.router.navigate(['/leader-dashboard']);
-        this.router.navigate(['/dashboard']);
-        localStorage.setItem('username', username);
+    //     // Navigate to dashboard
+    //     //this.router.navigate(['/admin-dashboard']);
+    //     //  this.router.navigate(['/leader-dashboard']);
+    //     this.router.navigate(['/dashboard']);
+    //     localStorage.setItem('username', username);
+    //   })
+    //   .fail((err: any) => {
+    //     console.error('Login Failed', err);
+
+    //     alert('Invalid Username or Password');
+    //   });
+
+    this.ssoAuth
+    .ssoAuthenticate(
+     username,
+      password
+    )
+
+    .then(() => {
+
+    console.log('Login successful');
+
+    localStorage.setItem('username', username);
+
+    this.router.navigate(['/dashboard'])
+      .then((success) => {
+        console.log('Navigation result:', success);
       })
-      .fail((err: any) => {
-        console.error('Login Failed', err);
-
-        alert('Invalid Username or Password');
+      .catch((error) => {
+        console.error('Navigation error:', error);
       });
+
+
+    })
+
+    .catch((error) => {
+
+      console.error(
+        'Login failed:',
+        error
+    );
+  })
+
+
   }
 }
