@@ -5,6 +5,7 @@ import { HeroService } from '../../core/services/hero.service';
 import { MatSelectModule } from '@angular/material/select';
 import { PageEvent } from '@angular/material/paginator';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 import {
   ChartComponent,
@@ -227,31 +228,40 @@ export class DashboardComponent implements OnInit {
   // Constructor
   //====================================================
 
-  constructor(private heroService: HeroService) {
+  constructor(private heroService: HeroService, private router: Router) {
     // this.initializeTrendChart();
 
     this.initializeDonutChart();
   }
 
-  username: any = localStorage.getItem('username') || 'Guest';
+  // username: any = localStorage.getItem('username') || 'Guest';
+  username:any;
+  dn:any;
+  sort:any;
+
   ngOnInit(): void {
     debugger;
+   
     // this.heroService
     //   .ajax(
-    //     'GetAllUsers ',
-    //     'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
-    //     {},
+    //     'GetUserDetails',
+    //     'http://schemas.cordys.com/1.1/ldap',
+    //     {
+    //       sort: this.sort || '',
+    //       dn: this.dn || '',
+    //     },
     //   )
     //   .then((resp: any) => {
-    //     console.log('resp=>', resp);
-    //     let dt = this.heroService.xmltojson(resp, 'quick_links');
-    //     console.log('show response after xmltojson=>', dt);
+    //     console.log('GetloggedInUserDetails resp=>', resp);
+    //     let dt = this.heroService.xmltojson(resp, 'user');
+    //     console.log('show GetloggedInUserDetails after xmltojson=>', dt);
     //   });
+
 
     // this.getTop5RecognitionData('');
     //this.loadDashboardData();
     this.getUserDetails();
-    this.getLast5Years();
+    
    // this.getRecognitionReqCount('');
   }
 
@@ -312,6 +322,14 @@ export class DashboardComponent implements OnInit {
   // Donut Chart
   //====================================================
 
+//   ngOnInit(): void {
+//   console.log('🔥🔥 DASHBOARD INIT');
+//   this.getLast5Years();
+// }
+
+// ngOnDestroy(): void {
+//   console.log('🔥🔥 DASHBOARD DESTROY');
+// }
 
 
   initializeDonutChart(): void {
@@ -506,6 +524,7 @@ populateDonutChart(): void {
   }
 
   getTop5RecognitionData(period: string): void {
+   
     this.heroService
       .ajax(
         'GetTop5OnLeaderboard',
@@ -546,7 +565,7 @@ populateDonutChart(): void {
         'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
         {
           period: period,
-          username: this.username,
+          username: this.loggedInUser,
         },
       )
       .then((resp: any) => {
@@ -566,6 +585,9 @@ populateDonutChart(): void {
             : [];
 
         console.log('Recognition Requests:', this.recognitionRequests);
+
+        this.getTop5RecognitionData(period);
+
         // Reset pagination whenever new data is loaded
 
         this.recognitionPageIndex = 0;
@@ -576,7 +598,7 @@ populateDonutChart(): void {
         );
       })
       .catch((error: any) => {
-        console.error('GetRecognitionDataFilter error:', error);
+        console.error('recognitionRequests error:', error);
 
         this.recognitionRequests = [];
       });
@@ -589,7 +611,7 @@ populateDonutChart(): void {
         'GetUserDetails',
         'http://schemas.cordys.com/UserManagement/1.0/Organization',
         {
-          Username: this.username,
+          Username: this.username || '',
         },
       )
       .then((resp: any) => {
@@ -600,6 +622,7 @@ populateDonutChart(): void {
         const result = this.heroService.xmltojson(resp, 'User');
 
         console.log('getUserDetails result:', result);
+        this.getLast5Years();
       })
       .catch((error: any) => {
         console.error('getUserDetails error:', error);
@@ -615,7 +638,7 @@ populateDonutChart(): void {
         'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
         {
           period: period,
-          username: this.username,
+          username: this.loggedInUser,
         },
       )
       .then((resp: any) => {
@@ -655,7 +678,7 @@ populateDonutChart(): void {
         'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
         {
           period: period,
-          username: this.username,
+          username: this.loggedInUser,
         },
       )
       .then((resp: any) => {
@@ -756,7 +779,7 @@ populateDonutChart(): void {
     console.log('Loading leaderboard for:', period);
 
     //Top 5 leaderboard data
-    this.getTop5RecognitionData(period);
+   // this.getTop5RecognitionData(period);
     // Recent recognition requests
     this.getRecentRecognitionRequest(period);
     // Recognition request count
@@ -891,6 +914,11 @@ populatePerformanceData(): void {
     }));
 
   console.log('Performance Data:', this.performanceData);
+}
+
+//=============================Navigation to My Inbox=========================
+goToMyInbox(): void {
+  this.router.navigate(['/my-inbox']);
 }
 
 

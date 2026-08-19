@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 declare var $: any;
- $.cordys.baseURL = '/home/Adnate';
+   //$.cordys.baseURL = '/home/Adnate';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +52,7 @@ ajax(method: any, namespace: any, parameters: any , data?: any) {
      parameters: parameters, 
 
      data: data,
-        url: '/home/Adnate/com.eibus.web.soap.Gateway.wcp',
+     //   url: '/home/Adnate/com.eibus.web.soap.Gateway.wcp',
 
      success: function success(resp: any) { 
 

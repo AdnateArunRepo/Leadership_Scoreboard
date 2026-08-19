@@ -186,7 +186,7 @@ KPI CARDS
 .stat-card{
 
     padding:14px 18px;
-    min-height:90px;
+    min-height:60px;
     border-radius:18px;
     color:#fff;
     display:flex;
@@ -1255,3 +1255,29 @@ NO DATA MESSAGE
 //   margin-left: auto;
 // }
 
+//====================================================
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clickable-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+//=======================My Performance No data Msg=============================
+
+.performance-no-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-height: 150px;
+
+  text-align: center;
+
+  color: #ef4444;
+  font-size: 14px;
+  font-weight: 700;
+}
