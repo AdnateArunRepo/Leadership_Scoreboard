@@ -128,3 +128,78 @@
   padding: 24px;
   color: #9ca3af;
 }
+
+//====================back button css=========================
+
+
+// .header-left {
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+// }
+
+// .back-btn {
+//   background: transparent;
+//   border: none;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 4px;
+//   color: #ffffff;
+//   border-radius: 50%;
+// }
+
+// .back-btn:hover {
+//   background: rgba(255, 255, 255, 0.15);
+// }
+
+// .back-btn mat-icon {
+//   font-size: 22px;
+//   width: 22px;
+//   height: 22px;
+// }
+
+// .header-title {
+//   font-size: 20px;
+//   font-weight: 600;
+// }
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  padding: 0;
+
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+
+  background: transparent;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn mat-icon {
+  font-size: 21px;
+  width: 21px;
+  height: 21px;
+  line-height: 21px;
+}
+
+.back-btn:hover {
+  background: #ffffff;
+  color: #1e3a5f;
+  transform: scale(1.05);
+}

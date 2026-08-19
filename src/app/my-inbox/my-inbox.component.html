@@ -3,6 +3,11 @@
   <!-- Header -->
   <div class="inbox-header">
     <div class="header-left">
+
+         <!-- Back Button -->
+    <button class="back-btn" (click)="goToDashboard()" title="Back to Dashboard">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
       <!--span class="hamburger">&#9776;</span-->
       <span class="header-title">My Inbox</span>
     </div>
@@ -10,9 +15,9 @@
     <div class="header-brand">Leadership Scoreboard</div>
 
     <div class="header-right">
-      <span class="icon-circle">&#128276;</span>
-      <span class="icon-circle">&#128100;</span>
+     
     </div>
+    
   </div>
 
   <!-- Tabs + Search -->
@@ -31,12 +36,14 @@
         Completed Tasks
       </span>
     </div>
+<!--
 
     <input
       type="text"
       class="search-input"
       placeholder="Search tasks..."
       [(ngModel)]="searchTerm" />
+      -->
   </div>
 
   <!-- Table -->
@@ -46,6 +53,8 @@
     <th>Request ID</th>
       <th>Assigned On</th>
       <th>Subject</th>
+            <th>Action</th>
+
       </tr>
     </thead>
     <tbody>
@@ -53,10 +62,7 @@
         <td>{{ task.requestId }}</td>
       <td>{{ task.assignedOn }}</td>
       <td>{{ task.subject }}</td>
-
-
-
-        <td>
+<td>
           <button class="open-task-btn" (click)="openTask(task)">Open Task</button>
         </td>
       </tr>
