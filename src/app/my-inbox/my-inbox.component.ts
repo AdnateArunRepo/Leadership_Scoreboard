@@ -109,7 +109,7 @@ export class MyInboxComponent {
   const source = this.activeTab === 'pending' ? this.pendingTasks : this.completedTasks;
   const term = this.searchTerm.trim().toLowerCase();
 
-  // Step 1: filter (no early return this time)
+  
   let filtered = !term
     ? source
     : source.filter(
@@ -118,7 +118,7 @@ export class MyInboxComponent {
           t.requestId.toLowerCase().includes(term)
       );
 
-  // Step 2: sort (runs regardless of whether a search term exists)
+  
   if (this.sortColumn) {
     const col = this.sortColumn;
     filtered = [...filtered].sort((a, b) => {
