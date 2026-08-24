@@ -64,7 +64,8 @@
     <tbody>
       <tr *ngFor="let task of currentTasks">
         <td>{{ task.requestId }}</td>
-      <td>{{ task.assignedOn }}</td>
+      <!--td>{{ task.assignedOn  }}</td-->
+      <td>{{ (task.assignedOn + 'Z') | date:'dd-MMM-yyyy, hh:mm a' }}</td>
       <td>{{ task.subject }}</td>
 <td>
           <button class="open-task-btn" (click)="openTask(task)">Open Task</button>
