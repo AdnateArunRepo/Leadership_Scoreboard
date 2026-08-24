@@ -458,6 +458,7 @@ populateDonutChart(): void {
   RecognitionReqCount: any = {};
   loggedInUser: any;
   recognitionCategoryPercentage:any =[];
+  recognitionBadgeCount:any = [];
 
   getRecognitionDataMonthly(): void {
     this.heroService
@@ -538,7 +539,8 @@ populateDonutChart(): void {
 
         const result = this.heroService.xmltojson(
           resp,
-          'O12ADNATELEADERSHIP_SCOREBOARDRECOGNITION',
+          'TABLE'
+       //   'O12ADNATELEADERSHIP_SCOREBOARDRECOGNITION',
         );
 
         console.log('Top 5 result:', result);
@@ -586,7 +588,7 @@ populateDonutChart(): void {
 
         console.log('Recognition Requests:', this.recognitionRequests);
 
-        this.getTop5RecognitionData(period);
+      //  this.getTop5RecognitionData(period);
 
         // Reset pagination whenever new data is loaded
 
@@ -713,6 +715,44 @@ populateDonutChart(): void {
       });
   }
 
+  GetRecognitionBadgeCount(period: string): void {
+
+    this.heroService
+      .ajax(
+        'GetRecognitionBadgeCount',
+        'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
+        {
+          period: period,
+          username: this.loggedInUser,
+        },
+      )
+      .then((resp: any) => {
+        console.log('GetRecognitionBadgeCount response:', resp);
+
+        const result = this.heroService.xmltojson(
+          resp,
+          'recognition_badge_table',
+        );
+
+        console.log('GetRecognitionBadgeCount result:', result);
+
+        this.recognitionBadgeCount = Array.isArray(result)
+          ? result
+          : result
+            ? [result]
+            : [];
+
+        console.log('Recognition Badge Counts:', this.recognitionBadgeCount);
+
+      })
+      .catch((error: any) => {
+        console.error('GetRecognitionBadgeCount error:', error);
+
+        this.recognitionBadgeCount = [];
+      });
+
+  }
+
   
 
   //==================toggle month,Quarter,Year======================
@@ -779,13 +819,15 @@ populateDonutChart(): void {
     console.log('Loading leaderboard for:', period);
 
     //Top 5 leaderboard data
-   // this.getTop5RecognitionData(period);
+    this.getTop5RecognitionData(period);
     // Recent recognition requests
     this.getRecentRecognitionRequest(period);
     // Recognition request count
     this.getRecognitionReqCount(period);
     // Recognition category percentage
     this.getRecognitionCategoryPercentage(period);
+    // Recognition badge count
+    this.GetRecognitionBadgeCount(period);
   }
   //------------------------------------------
 
@@ -920,6 +962,13 @@ populatePerformanceData(): void {
 goToMyInbox(): void {
   this.router.navigate(['/my-inbox']);
 }
+//============================badge count=====================================
+getBadgeCount(category: string): number {
+  const badge = this.recognitionBadgeCount.find(
+    (item: any) => item.category === category
+  );
 
+  return badge ? Number(badge.badgecount) : 0;
+}
 
 }
