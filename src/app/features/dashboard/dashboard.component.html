@@ -11,17 +11,7 @@
     </div>
 
     <div class="header-right">
-      <!-- <button mat-icon-button>
-        <mat-icon>search</mat-icon>
-      </button>
-
-      <button mat-icon-button>
-        <mat-icon>notifications</mat-icon>
-      </button>
-
-      <button mat-icon-button>
-        <mat-icon>mail</mat-icon>
-      </button> -->
+   
 
       <div class="profile">
         <img src="https://i.pravatar.cc/100?img=12" alt="profile" />
@@ -29,14 +19,13 @@
         <div>
           <h4>{{loggedInUser}}</h4>
 
-          <!-- <span>Team Leader</span> -->
+     
         </div>
       </div>
     </div>
   </header>
 
   <!-- ================= Filter ================= -->
-
 
   <div class="filter-section">
     <mat-button-toggle-group
@@ -103,86 +92,21 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+     <button
+    mat-raised-button
+    class="inbox-btn"
+    (click)="goToMyInbox()">
+    My Task
+  </button>
+
   </div>
 
   
 
   <!-- ================= KPI Cards ================= -->
 
-  <div class="stats-grid">
-    <!-- Total Recognition Points -->
-
-    <mat-card class="stat-card purple">
-      <div class="stat-content">
-        <div class="stat-icon">
-          <mat-icon>workspace_premium</mat-icon>
-        </div>
-
-        <div class="stat-text">
-          <span class="stat-title"> Total Recognition Points </span>
-
-          <h2 class="stat-value">
-           {{  RecognitionReqCount.TOTALRECOGNITIONPOINTS || 0 }}
-          </h2>
-        </div>
-      </div>
-    </mat-card>
-
-    <!-- Total Requests -->
-
-    <mat-card class="stat-card blue clickable-card" (click)="goToMyInbox()"   style="cursor: pointer;">
-      <div class="stat-content">
-        <div class="stat-icon">
-          <mat-icon>groups</mat-icon>
-        </div>
-
-        <div class="stat-text">
-          <span class="stat-title"> Total Request </span>
-
-          <h2 class="stat-value">
-           {{ RecognitionReqCount.TOTALRECOGNITIONREQUEST || 0 }}
-          </h2>
-        </div>
-      </div>
-    </mat-card>
-
-    <!-- Approved Requests -->
-
-    <mat-card class="stat-card green clickable-card" (click)="goToMyInbox()"   style="cursor: pointer;">
-      <div class="stat-content">
-        <div class="stat-icon">
-          <mat-icon>task_alt</mat-icon>
-        </div>
-
-        <div class="stat-text">
-          <span class="stat-title"> Approved Requests </span>
-
-          <h2 class="stat-value">
-            {{ RecognitionReqCount.APPROVEDREQUEST || 0 }}
-          </h2>
-        </div>
-      </div>
-    </mat-card>
-
-    <!-- Pending Requests -->
-
-    <mat-card class="stat-card orange clickable-card" (click)="goToMyInbox()"   style="cursor: pointer;">
-      <div class="stat-content">
-        <div class="stat-icon">
-          <mat-icon>schedule</mat-icon>
-        </div>
-
-        <div class="stat-text">
-          <span class="stat-title"> Pending Requests </span>
-
-          <h2 class="stat-value">
-          {{ RecognitionReqCount.PENDINGREQUEST || 0 }}
-          </h2>
-        </div>
-      </div>
-    </mat-card>
-  </div>
-
+  
   <!-- ================= Row 1 ================= -->
   <div class="dashboard-row">
     <div class="dashboard-row first-row">
@@ -267,268 +191,7 @@
 
       </mat-card>
 
-      <!-- Achievement Badges -->
-
-      <!-- <mat-card class="badge-card">
-        <div class="card-header">
-          <h3>Achievement Badges</h3>
-        </div>
-
-        <div class="badge-content">
-          <div class="badge-grid">
-            <div class="badge-item">
-              🏆
-
-              <span>Platinum Leader</span>
-            </div>
-
-            <div class="badge-item">
-              ⭐
-
-              <span>Star Performer</span>
-            </div>
-
-            <div class="badge-item">
-              🚀
-
-              <span>Innovator</span>
-            </div>
-
-            <div class="badge-item">
-              🤝
-
-              <span>Team Player</span>
-            </div>
-
-            <div class="badge-item">
-              💡
-
-              <span>Problem Solver</span>
-            </div>
-
-            <div class="badge-item">
-              🎯
-
-              <span>Goal Achiever</span>
-            </div>
-          </div>
-        </div>
-      </mat-card> -->
-
-<!-- Performance -->
-
-<mat-card class="performance-card">
-
-  <div class="card-header">
-    <h3>My Performance</h3>
-  </div>
-
-  <div
-    class="progress-item"
-    *ngFor="let performance of performanceData">
-
-    <div class="progress-header">
-
-      <span>
-        {{ performance.category }}
-      </span>
-
-      <strong>
-        {{ performance.percentage }}%
-      </strong>
-
-    </div>
-
-    <mat-progress-bar
-      mode="determinate"
-      [value]="performance.percentage">
-    </mat-progress-bar>
-
-  </div>
-
-  <!-- No Data -->
-
-  <div
-    class="performance-no-data"
-    *ngIf="performanceData.length === 0">
-
-    No performance data for this period.
-
-  </div>
-
-</mat-card>
-
-      <!-- Recognition Category Chart -->
-
-      <!-- <mat-card class="category-card">
-        <div class="card-header">
-          <h3>Recognition Categories</h3>
-        </div>
-
-        <apx-chart
-          [series]="donutChart.series"
-          [chart]="donutChart.chart"
-          [labels]="donutChart.labels"
-          [legend]="donutChart.legend"
-          [responsive]="donutChart.responsive"
-        >
-        </apx-chart>
-      </mat-card> -->
-    
-
-<mat-card class="category-card">
-
-  <div class="card-header">
-
-    <h3>
-      Recognition Categories
-    </h3>
-
-  </div>
-
-  <div class="category-chart-container">
-
-    <!-- ============================= -->
-    <!-- DONUT CHART -->
-    <!-- ============================= -->
-
-    <apx-chart
-
-      [series]="donutChart.series"
-
-      [chart]="donutChart.chart"
-
-      [labels]="donutChart.labels"
-
-      [legend]="donutChart.legend"
-
-      [responsive]="donutChart.responsive">
-
-    </apx-chart>
-
-
-    <!-- ============================= -->
-    <!-- NO DATA MESSAGE -->
-    <!-- ============================= -->
-
-    <div
-      class="category-no-data"
-      *ngIf="!hasCategoryData">
-
-      <span>
-        No data for this period
-      </span>
-
-    </div>
-
-  </div>
-
-</mat-card>
-
-    </div>
-    <!-- ================= Row 2 ================= -->
-
-    <div class="dashboard-row second-row">
-      <!-- Recent Requests -->
-
-      <mat-card class="request-card">
-        <div class="card-header">
-          <h3>Recent Recognition Requests</h3>
-
-
-          <!-- <button mat-flat-button color="primary">View All</button> -->
-        </div>
-
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Employee</th>
-
-                <th>Category</th>
-
-                <th>Points</th>
-
-                <th>Status</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <!-- <tr *ngFor="let request of recognitionRequests"> -->
-                <tr *ngFor="let request of paginatedRecognitionRequests">
-                <td>{{ request.CREATEDFOR }}</td>
-
-                <td>{{ request.CATEGORY }}</td>
-
-                <td>{{ request.AWARDEDPOINTS || 0 }}</td>
-
-                <td>
-                  <span
-                    class="status"
-                    [ngClass]="{
-                      approved: request.S_INSTANCE_STATUS === 'Complete',
-
-                      pending: request.S_INSTANCE_STATUS === 'In Progress',
-
-                      rejected: request.S_INSTANCE_STATUS === 'Rejected',
-                    }"
-                  >
-                    {{ request.S_INSTANCE_STATUS }}
-                  </span>
-                </td>
-              </tr>
-
-              <!-- No records -->
-
-              <tr *ngIf="recognitionRequests.length === 0">
-                <td colspan="4" class="no-data">
-                  No recognition requests found for the selected period.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-          <mat-paginator
-    *ngIf="recognitionRequests.length > 0"
-    [length]="recognitionRequests.length"
-    [pageSize]="5"
-    [pageSizeOptions]="[5, 10, 20]"
-    (page)="onRecognitionPageChange($event)"
-    showFirstLastButtons>
-
-  </mat-paginator>
-
-      </mat-card>
-
-      <!-- Recognition Trend -->
-
-      <!-- <mat-card class="chart-card">
-        <div class="card-header">
-          <div>
-            <h3>Recognition Trend</h3>
-
-            <span>Last 6 Months</span>
-          </div>
-
-          <button mat-icon-button>
-            <mat-icon>more_vert</mat-icon>
-          </button>
-        </div>
-
-        <apx-chart
-          [series]="trendChart.series"
-          [chart]="trendChart.chart"
-          [xaxis]="trendChart.xaxis"
-          [stroke]="trendChart.stroke"
-          [dataLabels]="trendChart.dataLabels"
-          [grid]="trendChart.grid"
-          [tooltip]="trendChart.tooltip"
-        >
-        </apx-chart>
-      </mat-card> -->
-
-        <!-- Achievement Badges -->
+           <!-- Achievement Badges -->
 
       <mat-card class="badge-card">
         <div class="card-header">
@@ -582,41 +245,119 @@
         </div>
       </mat-card>
 
+  
+      
 
-      <!--Contribution card-->
 
-      <mat-card class="contributors-card">
-        <div class="card-header">
-          <h3>Top Contributors</h3>
-        </div>
 
-        <div class="contributors-content">
-          <div class="contributor" *ngFor="let data of top5Data; let i = index">
-            <div class="avatar">
-            {{ getInitials(data.CREATEDFOR) }}
-            </div>
+    </div>
+    <!-- ================= Row 2 ================= -->
 
-            <div class="info">
-              <h4> {{ data.CREATEDFOR }}</h4>
+    <div class="dashboard-row second-row">
+    
 
-            </div>
+        <!-- Recognition Category Chart -->
 
-            <div class="points">
-              {{ data.TOTALPOINTS || 0 }}
-            </div>
+    
+<mat-card class="category-card">
 
-          
-          </div>
-             <!-- No Data -->
+  <div class="card-header">
 
-              <div *ngIf="top5Data.length === 0" class="no-data">
-              
-                  No top leaders found for the selected period.
-                
-              </div>
+    <h3>
+      Recognition Categories
+    </h3>
 
-        </div>
-      </mat-card>
+  </div>
+
+  <div class="category-chart-container">
+
+    <!-- ============================= -->
+    <!-- DONUT CHART -->
+    <!-- ============================= -->
+
+    <apx-chart
+
+      [series]="donutChart.series"
+
+      [chart]="donutChart.chart"
+
+      [labels]="donutChart.labels"
+
+      [legend]="donutChart.legend"
+
+      [responsive]="donutChart.responsive">
+
+    </apx-chart>
+
+
+    <!-- ============================= -->
+    <!-- NO DATA MESSAGE -->
+    <!-- ============================= -->
+
+    <div
+      class="category-no-data"
+      *ngIf="!hasCategoryData">
+
+      <span>
+        No data for this period
+      </span>
+
+    </div>
+
+  </div>
+
+</mat-card>
+
+  <!-- Performance -->
+
+
+
+<mat-card class="performance-card">
+
+  <div class="card-header">
+    <h3>My Performance</h3>
+  </div>
+
+     <!-- Column Titles -->
+  <div class="performance-title-row">
+    <span>Category</span>
+    <span>Total Points</span>
+  </div>
+
+  <div class="performance-list">
+
+    <div
+      class="progress-item"
+      *ngFor="let performance of performanceData">
+
+      <div class="progress-header">
+        <span>{{ performance.category }}</span>
+        <strong>{{ performance.percentage }}</strong>
+      </div>
+
+      <mat-progress-bar
+        mode="determinate"
+        [value]="performance.percentage">
+      </mat-progress-bar>
+
+    </div>
+
+    <div
+      class="performance-no-data"
+      *ngIf="performanceData.length === 0">
+      No performance data for this period.
+    </div>
+
+  </div>
+
+</mat-card>
+
+    
+
+   
+
+
+    
 
       
 

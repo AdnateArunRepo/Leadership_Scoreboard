@@ -1,0 +1,170 @@
+<div class="request-container">
+
+    <!-- Back Button -->
+  <div class="back-button-container">
+    <button mat-stroked-button type="button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  </div>
+
+  <!-- Header -->
+
+  <div class="request-header">
+
+      <!-- <button
+      mat-stroked-button
+      type="button"
+      class="back-button"
+      (click)="goBack()"
+    >
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button> -->
+
+    <!-- <div class="header-content"> -->
+
+        <div>
+      <h1>Recognition Requests</h1>
+
+      <p>
+        All recognition requests
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Request Table -->
+
+  <mat-card class="request-card">
+
+    <div class="card-header">
+
+      <h3>
+        Recognition Requests
+      </h3>
+
+      <span>
+        Total: {{ recognitionRequests.length }}
+      </span>
+
+    </div>
+
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Employee</th>
+
+            <th>Category</th>
+
+            <th>Sub Category</th>
+
+            <th>Points</th>
+
+            <th>Status</th>
+
+            <th>Created On</th>
+
+            <th>Approved On</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let request of paginatedRequests"
+          >
+
+            <td>
+              {{ request.CREATEDFOR || '-' }}
+            </td>
+
+            <td>
+              {{ request.CATEGORY || '-' }}
+            </td>
+
+            <td>
+              {{ request.SUBCATEGORY || '-' }}
+            </td>
+
+            <td>
+              {{ request.AWARDEDPOINTS || 0 }}
+            </td>
+
+            <td>
+
+              <span
+                class="status"
+                [ngClass]="{
+                  'approved':
+                    request.S_INSTANCE_STATUS === 'Complete',
+
+                  'pending':
+                    request.S_INSTANCE_STATUS === 'In Progress',
+
+                  'rejected':
+                    request.S_INSTANCE_STATUS === 'Rejected'
+                }"
+              >
+
+                {{ request.S_INSTANCE_STATUS || '-' }}
+
+              </span>
+
+            </td>
+
+            <td>
+              {{ request.CREATEDON || '-' }}
+            </td>
+
+            <td>
+              {{ request.APPROVEDON || '-' }}
+            </td>
+
+          </tr>
+
+
+          <!-- No Data -->
+
+          <tr
+            *ngIf="recognitionRequests.length === 0"
+          >
+
+            <td
+              colspan="7"
+              class="no-data"
+            >
+
+              No recognition requests found.
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </mat-card>
+
+<mat-paginator
+  [length]="recognitionRequests.length"
+  [pageSize]="5"
+  [pageSizeOptions]="[5,10, 20, 50]"
+  (page)="onPageChange($event)"
+  showFirstLastButtons>
+</mat-paginator>
+
+</div>

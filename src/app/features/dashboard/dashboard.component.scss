@@ -581,18 +581,18 @@ BADGES
     flex-direction:column;
     justify-content:center;
     align-items:center;
-   // padding:24px 12px;
+    padding:24px 12px;
     border-radius:16px;
     background:#f7f9fc;
     transition:.3s;
     cursor:pointer;
-    //font-size:34px;
+    font-size:32px;
      /* Reduced internal height */
-  padding: 10px 12px;
+ // padding: 10px 12px;
   min-height: 55px;
   border-radius: 10px;
   /* Smaller emoji */
-  font-size: 28px;
+ // font-size: 28px;
 
 }
 
@@ -889,13 +889,13 @@ END
 .dashboard-row:first-child{
 
     // grid-template-columns:1.3fr 1fr 1.3fr 1fr;
-    grid-template-columns:2.3fr 1fr  1fr;
+    grid-template-columns:2.8fr 1.6fr  ;
 }
 
 .second-row{
 
     // grid-template-columns:2.3fr 1fr 1fr;
-     grid-template-columns:2.3fr 1fr 1fr;
+     grid-template-columns:2.8fr 1.6fr ;
 }
 
 .leaderboard-card,
@@ -1280,4 +1280,141 @@ NO DATA MESSAGE
   color: #ef4444;
   font-size: 14px;
   font-weight: 700;
+}
+
+//=======================My Performance Column Titles=============================
+
+
+.performance-card {
+  padding: 18px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* My Performance heading */
+.performance-card .card-header {
+  margin-bottom: 10px;
+}
+
+// /* Category / Total Points headings */
+.performance-title-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+
+  width: 100%;
+  padding: 0 2px 8px;
+
+  color: #7a869a;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Each performance record */
+.progress-item {
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 12px;
+}
+
+
+
+
+.filter-section {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.filter-section mat-button-toggle-group {
+  flex-shrink: 0;
+}
+
+.period-filter {
+  width: 350px;
+  margin-left: auto;
+  margin-bottom: 0;
+  height: 56px;
+}
+
+.inbox-btn {
+  height: 56px;
+  min-width: 110px;
+  margin-left: 10px;
+  margin-bottom: 0;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+
+//=======================================
+// .performance-card {
+//   height: 350px;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// .card-header {
+//   flex-shrink: 0;
+// }
+
+// .performance-list {
+//   flex: 1;
+//   overflow-y: auto;
+//   padding-right: 5px;
+// }
+
+// .performance-list::-webkit-scrollbar {
+//   width: 6px;
+// }
+
+// .performance-list::-webkit-scrollbar-thumb {
+//   background: #bbb;
+//   border-radius: 10px;
+// }
+
+.performance-card {
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+}
+
+.card-header {
+  flex-shrink: 0;
+  padding: 20px;
+}
+
+.card-header h3 {
+  margin: 0;
+}
+
+.performance-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 20px 20px;
+}
+
+.progress-item {
+  margin-bottom: 20px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-header span {
+  font-size: 18px;
+}
+
+.progress-header strong {
+  font-size: 18px;
+}
+
+mat-progress-bar {
+  height: 5px;
+  border-radius: 5px;
 }

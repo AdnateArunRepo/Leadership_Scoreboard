@@ -525,6 +525,8 @@ populateDonutChart(): void {
   }
 
   getTop5RecognitionData(period: string): void {
+     console.log('Loading recent recognition requests for:', period);
+     localStorage.setItem('Period',period)
    
     this.heroService
       .ajax(
@@ -688,7 +690,7 @@ populateDonutChart(): void {
 
         const result = this.heroService.xmltojson(
           resp,
-          'O12ADNATELEADERSHIP_SCOREBOARDCATEGORY',
+          'O12ADNATELEADERSHIP_SCOREBOARDRECOGNITION',
         );
 
         console.log('GetRecognitionCategoryPercentage result:', result);
@@ -952,7 +954,7 @@ populatePerformanceData(): void {
   this.performanceData =
     this.recognitionCategoryPercentage.map((item: any) => ({
       category: item.CATEGORYNAME || 'Unknown',
-      percentage: Number(item.REQUESTPERCENTAGE) || 0
+      percentage: Number(item.TOTALAWARDEDPOINTS) || 0
     }));
 
   console.log('Performance Data:', this.performanceData);
@@ -969,6 +971,25 @@ getBadgeCount(category: string): number {
   );
 
   return badge ? Number(badge.badgecount) : 0;
+}
+
+//=============================Navigation to Recognition Request=========================
+goToRequestComponent(): void {
+   localStorage.setItem('status','');
+  this.router.navigate(['/request']);
+ 
+}
+
+goToRequestComponentPending(): void {
+   localStorage.setItem('status','Pending');
+  this.router.navigate(['/request']);
+ 
+}
+
+goToRequestComponentComplete(): void {
+   localStorage.setItem('status','Complete');
+  this.router.navigate(['/request']);
+ 
 }
 
 }
