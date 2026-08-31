@@ -725,14 +725,14 @@ populateDonutChart(): void {
       });
   }
 
-  GetRecognitionBadgeCount(period: string): void {
+  GetRecognitionBadgeCount(badgePeriod: string): void {
 
     this.heroService
       .ajax(
         'GetRecognitionBadgeCount',
         'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
         {
-          period: period,
+          period: badgePeriod,
           username: this.loggedInUser,
         },
       )
@@ -879,19 +879,41 @@ populateDonutChart(): void {
 
   selectedPeriodBadge: string = 'All';
 
+// getSelectedPeriodBadge(): string {
+//   if (!this.selectedPeriodBadge) {
+//     return 'All';
+//   }
+
+
+//   if (this.selectedPeriodBadge === 'quarterly') {
+//     return `Q${this.selectedQuarter}-${this.selectedYear}`;
+//   }
+
+//   return `Y${this.selectedYear}`;
+// }
+
 getSelectedPeriodBadge(): string {
-  if (!this.selectedPeriodBadge) {
+
+  // Overall / default
+  if (
+    !this.selectedPeriodType ||
+    this.selectedPeriodType === 'monthly'
+  ) {
     return 'All';
   }
 
-
-  if (this.selectedPeriodBadge === 'quarterly') {
+  // Quarterly
+  if (this.selectedPeriodType === 'quarterly') {
     return `Q${this.selectedQuarter}-${this.selectedYear}`;
   }
 
-  return `Y${this.selectedYear}`;
-}
+  // Annual
+  if (this.selectedPeriodType === 'annual') {
+    return `Y${this.selectedYear}`;
+  }
 
+  return 'All';
+}
 
 
 
@@ -1083,6 +1105,19 @@ getTotalPoints(): number {
     (total, performance) => total + Number(performance.percentage || 0),
     0
   );
+}
+
+//==============================Adding dynamic badge title====================
+getAchievementBadgeTitle(): string {
+  if (this.selectedPeriodType === 'quarterly') {
+    return 'Quarterly Achievement Badges';
+  }
+
+  if (this.selectedPeriodType === 'annual') {
+    return 'Yearly Achievement Badges';
+  }
+
+  return 'Overall Achievement Badges';
 }
 
 }
