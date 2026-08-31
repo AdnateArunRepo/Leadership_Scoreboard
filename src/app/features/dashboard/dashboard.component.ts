@@ -46,6 +46,14 @@ export interface DonutChartOptions {
   responsive: ApexResponsive[];
 }
 
+interface InboxTask {
+  requestId: string;
+  assignedOn: string;
+  subject: string;
+  status: 'Pending' | 'Completed';
+  taskUrl: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -755,6 +763,61 @@ populateDonutChart(): void {
 
   }
 
+  //=========================get user task============================
+
+
+
+  pendingTasks: InboxTask[] = [];
+  completedTasks: InboxTask[] = [];
+  userPendingTaskCount:any;
+
+  getUserTasks() {
+    this.heroService
+      .ajax(
+        'GetUserTasks',
+        'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
+        { UserID: this.loggedInUser }
+      )
+      .then((resp: any) => {
+        console.log('GetUserTasks response =>', resp);
+ 
+             const tuples = resp?.tuple;
+        if (!tuples) {
+          this.pendingTasks = [];
+          this.completedTasks = [];
+          return;
+        }
+ 
+        const tupleArray = Array.isArray(tuples) ? tuples : [tuples];
+        const count = tupleArray.length;
+      //  console.log("count",count)
+ 
+ 
+          const allTasks: (InboxTask & { state: string })[] = tupleArray.map((t: any) => {
+          const util = t?.old?.LeadershipUtility ?? {};
+          const state = String(util.STATE ?? '');
+ 
+          return {
+            requestId: util.REQUESTID ?? '',
+            assignedOn: util.ASSIGNEDON ?? '',
+            subject: util.SUBJECT ?? '',
+            status: state === '5' ? 'Completed' : 'Pending',
+            taskUrl: util.TASKURL ?? '',
+            state
+          };
+        });
+                this.pendingTasks = allTasks.filter(t => t.state === '2');
+                this.userPendingTaskCount = this.pendingTasks.length;
+                console.log('userPendingTaskCount', this.userPendingTaskCount)
+        this.completedTasks = allTasks.filter(t => t.state === '5');
+      })
+ 
+      .catch((err: any) => {
+        console.error('GetUserTasks error =>', err);
+      });
+  }
+
+
   
 
   //==================toggle month,Quarter,Year======================
@@ -814,9 +877,28 @@ populateDonutChart(): void {
     return `Y${this.selectedYear}`;
   }
 
+  selectedPeriodBadge: string = 'All';
+
+getSelectedPeriodBadge(): string {
+  if (!this.selectedPeriodBadge) {
+    return 'All';
+  }
+
+
+  if (this.selectedPeriodBadge === 'quarterly') {
+    return `Q${this.selectedQuarter}-${this.selectedYear}`;
+  }
+
+  return `Y${this.selectedYear}`;
+}
+
+
+
+
   //------------------------------------------
   loadDashboardData(): void {
     const period = this.getSelectedPeriod();
+    const badgePeriod= this.getSelectedPeriodBadge();
 
     console.log('Loading leaderboard for:', period);
 
@@ -829,7 +911,9 @@ populateDonutChart(): void {
     // Recognition category percentage
     this.getRecognitionCategoryPercentage(period);
     // Recognition badge count
-    this.GetRecognitionBadgeCount(period);
+    this.GetRecognitionBadgeCount(badgePeriod);
+    //user pending task count
+    this.getUserTasks();
   }
   //------------------------------------------
 
@@ -990,6 +1074,15 @@ goToRequestComponentComplete(): void {
    localStorage.setItem('status','Complete');
   this.router.navigate(['/request']);
  
+}
+
+//=============================get total points category=======================
+
+getTotalPoints(): number {
+  return this.performanceData.reduce(
+    (total, performance) => total + Number(performance.percentage || 0),
+    0
+  );
 }
 
 }

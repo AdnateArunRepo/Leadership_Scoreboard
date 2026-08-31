@@ -20,7 +20,7 @@
     
   </div>
 
-  <!-- Tabs + Search -->
+  <!-- Tabs + Search -->  
   <div class="toolbar-row">
     <div class="tabs">
       <span
@@ -36,23 +36,32 @@
         Completed Tasks
       </span>
     </div>
-<!--
+
 
     <input
       type="text"
       class="search-input"
       placeholder="Search tasks..."
       [(ngModel)]="searchTerm" />
-      -->
+      
   </div>
 
   <!-- Table -->
   <table class="task-table">
     <thead>
       <tr>
-    <th>Request ID</th>
-      <th>Assigned On</th>
-      <th>Subject</th>
+    <th (click)="sortBy('requestId')">
+      Request ID
+      <span *ngIf="sortColumn==='requestId'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+    </th>
+      <th (click)="sortBy('assignedOn')">
+        Assigned On
+      <span *ngIf="sortColumn==='assignedOn'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+
+      </th>
+      <th (click)="sortBy('subject')">
+        <span *ngIf="sortColumn==='subject'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+        Subject</th>
             <th>Action</th>
 
       </tr>
@@ -60,7 +69,8 @@
     <tbody>
       <tr *ngFor="let task of currentTasks">
         <td>{{ task.requestId }}</td>
-      <td>{{ task.assignedOn }}</td>
+      <!--td>{{ task.assignedOn  }}</td-->
+      <td>{{ (task.assignedOn + 'Z') | date:'dd-MMM-yyyy, hh:mm a' }}</td>
       <td>{{ task.subject }}</td>
 <td>
           <button class="open-task-btn" (click)="openTask(task)">Open Task</button>

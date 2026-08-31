@@ -29,6 +29,8 @@ export class MyInboxComponent {
   searchTerm = '';
   pendingTasks: InboxTask[] = [];
   completedTasks: InboxTask[] = [];
+  sortColumn: keyof InboxTask | '' = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
 
   constructor(private hs: HeroService, private route: ActivatedRoute,private router: Router) {
     //console.log('username field at construction =>', this.username)
@@ -79,11 +81,11 @@ export class MyInboxComponent {
         }
 
         const tupleArray = Array.isArray(tuples) ? tuples : [tuples];
+        const count = tupleArray.length;
+      //  console.log("count",count)
 
-       
 
-
-                const allTasks: (InboxTask & { state: string })[] = tupleArray.map((t: any) => {
+          const allTasks: (InboxTask & { state: string })[] = tupleArray.map((t: any) => {
           const util = t?.old?.LeadershipUtility ?? {};
           const state = String(util.STATE ?? '');
 
@@ -106,15 +108,44 @@ export class MyInboxComponent {
   }
 
   get currentTasks(): InboxTask[] {
-    const source = this.activeTab === 'pending' ? this.pendingTasks : this.completedTasks;
-    const term = this.searchTerm.trim().toLowerCase();
-    if (!term) return source;
-    return source.filter(
-      t =>
-        t.subject.toLowerCase().includes(term) ||
-        t.requestId.toLowerCase().includes(term)
-    );
+  const source = this.activeTab === 'pending' ? this.pendingTasks : this.completedTasks;
+  const term = this.searchTerm.trim().toLowerCase();
+
+  
+  let filtered = !term
+    ? source
+    : source.filter(
+        t =>
+          t.subject.toLowerCase().includes(term) ||
+          t.requestId.toLowerCase().includes(term)
+      );
+
+  
+  if (this.sortColumn) {
+    const col = this.sortColumn;
+    filtered = [...filtered].sort((a, b) => {
+      const valA = (a[col] ?? '').toString().toLowerCase();
+      const valB = (b[col] ?? '').toString().toLowerCase();
+
+      if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+      if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
   }
+
+  return filtered;
+}
+
+  sortBy(column: keyof InboxTask): void {
+  if (this.sortColumn === column) {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    this.sortColumn = column;
+    this.sortDirection = 'asc';
+  }
+    console.log('new state:', this.sortColumn, this.sortDirection);
+
+}
 
   switchTab(tab: 'pending' | 'completed'): void {
     this.activeTab = tab;
