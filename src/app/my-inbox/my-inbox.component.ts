@@ -79,11 +79,11 @@ export class MyInboxComponent {
         }
 
         const tupleArray = Array.isArray(tuples) ? tuples : [tuples];
+        const count = tupleArray.length;
+      //  console.log("count",count)
 
-       
 
-
-                const allTasks: (InboxTask & { state: string })[] = tupleArray.map((t: any) => {
+          const allTasks: (InboxTask & { state: string })[] = tupleArray.map((t: any) => {
           const util = t?.old?.LeadershipUtility ?? {};
           const state = String(util.STATE ?? '');
 
