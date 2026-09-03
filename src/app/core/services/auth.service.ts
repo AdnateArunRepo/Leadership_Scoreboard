@@ -13,7 +13,7 @@ export class AuthService {
 
     if (typeof $ !== 'undefined' && $.cordys) {
 
-   //  $.cordys.baseURL = '/home/Adnate';
+   // $.cordys.baseURL = '/home/Adnate';
 
     }
 

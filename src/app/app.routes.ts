@@ -61,6 +61,15 @@ export const routes: Routes = [
    canActivate: [authGuard]
 },
 
+{
+  path: 'request',
+  loadComponent: () =>
+    import('./features/recognization-request/recognization-request.component').then(
+      m => m.RecognizationRequestComponent
+    ),
+   canActivate: [authGuard]
+},
+
   
   // Wildcard Route
   {

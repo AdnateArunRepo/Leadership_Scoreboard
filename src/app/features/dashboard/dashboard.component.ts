@@ -46,6 +46,14 @@ export interface DonutChartOptions {
   responsive: ApexResponsive[];
 }
 
+interface InboxTask {
+  requestId: string;
+  assignedOn: string;
+  subject: string;
+  status: 'Pending' | 'Completed';
+  taskUrl: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -525,6 +533,8 @@ populateDonutChart(): void {
   }
 
   getTop5RecognitionData(period: string): void {
+     console.log('Loading recent recognition requests for:', period);
+     localStorage.setItem('Period',period)
    
     this.heroService
       .ajax(
@@ -688,7 +698,7 @@ populateDonutChart(): void {
 
         const result = this.heroService.xmltojson(
           resp,
-          'O12ADNATELEADERSHIP_SCOREBOARDCATEGORY',
+          'O12ADNATELEADERSHIP_SCOREBOARDRECOGNITION',
         );
 
         console.log('GetRecognitionCategoryPercentage result:', result);
@@ -715,14 +725,14 @@ populateDonutChart(): void {
       });
   }
 
-  GetRecognitionBadgeCount(period: string): void {
+  GetRecognitionBadgeCount(badgePeriod: string): void {
 
     this.heroService
       .ajax(
         'GetRecognitionBadgeCount',
         'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
         {
-          period: period,
+          period: badgePeriod,
           username: this.loggedInUser,
         },
       )
@@ -752,6 +762,61 @@ populateDonutChart(): void {
       });
 
   }
+
+  //=========================get user task============================
+
+
+
+  pendingTasks: InboxTask[] = [];
+  completedTasks: InboxTask[] = [];
+  userPendingTaskCount:any;
+
+  getUserTasks() {
+    this.heroService
+      .ajax(
+        'GetUserTasks',
+        'http://schemas.cordys.com/LDR_SCRBD_WsAppPackage',
+        { UserID: this.loggedInUser }
+      )
+      .then((resp: any) => {
+        console.log('GetUserTasks response =>', resp);
+ 
+             const tuples = resp?.tuple;
+        if (!tuples) {
+          this.pendingTasks = [];
+          this.completedTasks = [];
+          return;
+        }
+ 
+        const tupleArray = Array.isArray(tuples) ? tuples : [tuples];
+        const count = tupleArray.length;
+      //  console.log("count",count)
+ 
+ 
+          const allTasks: (InboxTask & { state: string })[] = tupleArray.map((t: any) => {
+          const util = t?.old?.LeadershipUtility ?? {};
+          const state = String(util.STATE ?? '');
+ 
+          return {
+            requestId: util.REQUESTID ?? '',
+            assignedOn: util.ASSIGNEDON ?? '',
+            subject: util.SUBJECT ?? '',
+            status: state === '5' ? 'Completed' : 'Pending',
+            taskUrl: util.TASKURL ?? '',
+            state
+          };
+        });
+                this.pendingTasks = allTasks.filter(t => t.state === '2');
+                this.userPendingTaskCount = this.pendingTasks.length;
+                console.log('userPendingTaskCount', this.userPendingTaskCount)
+        this.completedTasks = allTasks.filter(t => t.state === '5');
+      })
+ 
+      .catch((err: any) => {
+        console.error('GetUserTasks error =>', err);
+      });
+  }
+
 
   
 
@@ -812,9 +877,50 @@ populateDonutChart(): void {
     return `Y${this.selectedYear}`;
   }
 
+  selectedPeriodBadge: string = 'All';
+
+// getSelectedPeriodBadge(): string {
+//   if (!this.selectedPeriodBadge) {
+//     return 'All';
+//   }
+
+
+//   if (this.selectedPeriodBadge === 'quarterly') {
+//     return `Q${this.selectedQuarter}-${this.selectedYear}`;
+//   }
+
+//   return `Y${this.selectedYear}`;
+// }
+
+getSelectedPeriodBadge(): string {
+
+  // Overall / default
+  if (
+    !this.selectedPeriodType ||
+    this.selectedPeriodType === 'monthly'
+  ) {
+    return 'All';
+  }
+
+  // Quarterly
+  if (this.selectedPeriodType === 'quarterly') {
+    return `Q${this.selectedQuarter}-${this.selectedYear}`;
+  }
+
+  // Annual
+  if (this.selectedPeriodType === 'annual') {
+    return `Y${this.selectedYear}`;
+  }
+
+  return 'All';
+}
+
+
+
   //------------------------------------------
   loadDashboardData(): void {
     const period = this.getSelectedPeriod();
+    const badgePeriod= this.getSelectedPeriodBadge();
 
     console.log('Loading leaderboard for:', period);
 
@@ -827,7 +933,9 @@ populateDonutChart(): void {
     // Recognition category percentage
     this.getRecognitionCategoryPercentage(period);
     // Recognition badge count
-    this.GetRecognitionBadgeCount(period);
+    this.GetRecognitionBadgeCount(badgePeriod);
+    //user pending task count
+    this.getUserTasks();
   }
   //------------------------------------------
 
@@ -952,7 +1060,7 @@ populatePerformanceData(): void {
   this.performanceData =
     this.recognitionCategoryPercentage.map((item: any) => ({
       category: item.CATEGORYNAME || 'Unknown',
-      percentage: Number(item.REQUESTPERCENTAGE) || 0
+      percentage: Number(item.TOTALAWARDEDPOINTS) || 0
     }));
 
   console.log('Performance Data:', this.performanceData);
@@ -969,6 +1077,47 @@ getBadgeCount(category: string): number {
   );
 
   return badge ? Number(badge.badgecount) : 0;
+}
+
+//=============================Navigation to Recognition Request=========================
+goToRequestComponent(): void {
+   localStorage.setItem('status','');
+  this.router.navigate(['/request']);
+ 
+}
+
+goToRequestComponentPending(): void {
+   localStorage.setItem('status','Pending');
+  this.router.navigate(['/request']);
+ 
+}
+
+goToRequestComponentComplete(): void {
+   localStorage.setItem('status','Complete');
+  this.router.navigate(['/request']);
+ 
+}
+
+//=============================get total points category=======================
+
+getTotalPoints(): number {
+  return this.performanceData.reduce(
+    (total, performance) => total + Number(performance.percentage || 0),
+    0
+  );
+}
+
+//==============================Adding dynamic badge title====================
+getAchievementBadgeTitle(): string {
+  if (this.selectedPeriodType === 'quarterly') {
+    return 'Quarterly Achievement Badges';
+  }
+
+  if (this.selectedPeriodType === 'annual') {
+    return 'Yearly Achievement Badges';
+  }
+
+  return 'Overall Achievement Badges';
 }
 
 }
