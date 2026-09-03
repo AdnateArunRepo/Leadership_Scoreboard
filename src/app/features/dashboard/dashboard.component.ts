@@ -698,7 +698,7 @@ populateDonutChart(): void {
 
         const result = this.heroService.xmltojson(
           resp,
-          'O12ADNATELEADERSHIP_SCOREBOARDRECOGNITION',
+          'TABLE',
         );
 
         console.log('GetRecognitionCategoryPercentage result:', result);
